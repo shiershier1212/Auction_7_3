@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="./css/account.css">
+    <link rel="stylesheet" href="css/common.css">
+
+    <title>个人页面</title>
+</head>
+<body>
+<div id="app">
+    <el-container>
+        <el-header>
+            <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+                <el-menu-item index="4" style="float: right"><a href="account.html" target="_blank">个人页面</a>
+                </el-menu-item>
+                <el-menu-item index="3" style="float: right">我的收藏</el-menu-item>
+                <el-menu-item index="2" style="float: right">我的消息</el-menu-item>
+                <el-menu-item index="1" style="float: right"><a href="main.html" target="_blank">拍卖主页</a></el-menu-item>
+            </el-menu>
+        </el-header>
+        <el-container>
+            <el-aside width="400px">
+                <div class="userImage">
+                    <img class="userimg" src="./img/img-01.png" alt="">
+                    <el-tag type="success">{{user.name}}</el-tag>
+                    <el-tag type="success">￥{{user.money}}</el-tag>
+
+                </div>
+                <div class="someButton">
+                    <el-button type="success" class="btn" style="margin-left: 10px">个人信息</el-button>
+                    <el-button type="success" class="btn">我的宝贝</el-button>
+                    <el-button type="success" class="btn">成功按钮</el-button>
+                    <el-button type="success" class="btn">退出登录</el-button>
+                </div>
+            </el-aside>
+            <el-container>
+                <el-main>
+
+
+                </el-main>
+            </el-container>
+        </el-container>
+    </el-container>
+</div>
+
+
+<script src="js/account.js"></script>
+</body>
+</html>
+

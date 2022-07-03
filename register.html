@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <title>注册页面</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--图标-->
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+
+    <!--布局框架-->
+    <link rel="stylesheet" type="text/css" href="css/util.css">
+
+    <!--主要样式-->
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+
+<div class="login" id="app">
+    <div class="container-login100">
+        <div class="wrap-login100">
+            <div class="login100-pic js-tilt" data-tilt>
+                <img src="img/img-01.png" alt="IMG">
+            </div>
+
+            <form class="login100-form validate-form">
+				<span class="login100-form-title">
+					竞拍网-会员注册
+				</span>
+
+                <div class="wrap-input100 validate-input">
+                    <label>
+                        <input class="input100" type="text" name="phoneNumber" placeholder="手机号" v-model="user.phone_number">
+                    </label>
+                    <span class="focus-input100"></span>
+                    <span class="symbol-input100">
+						<i class="fa fa-envelope" aria-hidden="true"></i>
+					</span>
+                </div>
+
+                <div class="wrap-input100 validate-input">
+                    <label>
+                        <input class="input100" type="password" name="pass" placeholder="密码" v-model="user.password">
+                    </label>
+                    <span class="focus-input100"></span>
+                    <span class="symbol-input100">
+						<i class="fa fa-lock" aria-hidden="true"></i>
+					</span>
+                </div>
+
+                <div class="wrap-input100 validate-input">
+                    <label>
+                        <input class="input100" type="text" name="name" placeholder="昵称" v-model="user.name">
+                    </label>
+                    <span class="focus-input100"></span>
+                    <span class="symbol-input100">
+						<i class="fa fa-envelope" aria-hidden="true"></i>
+					</span>
+                </div>
+
+                <div class="container-login100-form-btn">
+                    <button class="login100-form-btn" type="button" @click="postUser">
+                        注册
+                    </button>
+                </div>
+
+                <div class="text-center p-t-12">
+                    <a class="txt2" href="javascript:">
+                    </a>
+                </div>
+
+                <div class="text-center p-t-136">
+                    <a class="txt2" href="login.html">
+                        已有账号？立即登录
+                        <i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="./js/index.js"></script>
+</body>
+</html>

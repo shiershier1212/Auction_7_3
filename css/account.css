@@ -1,0 +1,65 @@
+.el-header, .el-footer {
+    background-color: #ffffff;
+    color: #333;
+    text-align: center;
+    line-height: 60px;
+}
+
+.el-aside {
+    background-color: #D3DCE6;
+    color: #333;
+    text-align: center;
+    /*line-height: 200px;*/
+    height: 665px;
+    align-items: center;
+    display: flex !important;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.userImage {
+    align-items: center;
+    display: flex !important;
+    justify-content: center;
+    flex-direction: column;
+    background-color: #c9d2ee;
+    margin-bottom: 20px;
+}
+
+.userimg {
+    width: 170px;
+    height: 170px;
+}
+
+.someButton {
+    width: 300px;
+    height: 390px;
+    background-color: #d0eec9;
+}
+
+.btn {
+    width: 280px;
+    height: 70px;
+    margin-bottom: 10px;
+}
+
+.el-main {
+    background-color: #E9EEF3;
+    color: #333;
+    text-align: center;
+    line-height: 160px;
+
+}
+
+body > .el-container {
+    margin-bottom: 40px;
+}
+
+.el-container:nth-child(5) .el-aside,
+.el-container:nth-child(6) .el-aside {
+    line-height: 260px;
+}
+
+.el-container:nth-child(7) .el-aside {
+    line-height: 320px;
+}
