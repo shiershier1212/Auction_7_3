@@ -30,21 +30,22 @@ let app = new Vue({
             axios.get("http://localhost:8081/users/" + this.loginpn)
                 .then(res => {
                     console.log(res)
-                    // that.userList = res.data.data
                     if (res.data.data === null) {
-                        alert("账号不存在！")
+                        this.$message.error("账号不存在，请检查账号！")
                         return
                     }
                     if (that.loginps === res.data.data.password) {
-                        // alert("密码正确！")
+                        this.$message({message:"登录成功！",type:"success"})
                         window.location.href="account.html"
                         localStorage.nowLoginUserPhoneNumber = that.loginpn
+                        // localStorage.noLoginUserId = res.data.data.id
                     } else {
-                        alert("密码不正确！")
+                        this.$message.error("登录失败，请检查账号或者密码！")
                     }
                 })
                 .catch(res => {
                     console.log(res)
+                    this.$message.error("请求失败！")
                 })
         },
         postUser() {

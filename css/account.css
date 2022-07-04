@@ -36,6 +36,9 @@
     height: 390px;
     /*background-color: #d0eec9;*/
 }
+.someButton .btn{
+    height: 67px;
+}
 
 .btn {
     width: 280px;
@@ -47,8 +50,12 @@
     background-color: #E9EEF3;
     color: #333;
     text-align: center;
-    line-height: 160px;
-
+    /*line-height: 160px;*/
+    line-height: 30px;
+    align-items: center;
+    display: flex !important;
+    justify-content: center;
+    flex-direction: column;
 }
 
 body > .el-container {
@@ -62,4 +69,68 @@ body > .el-container {
 
 .el-container:nth-child(7) .el-aside {
     line-height: 320px;
+}
+
+.goodsview{
+    background-color: #e0e0e0;
+    height: 398px;
+}
+.goodsImage{
+    /*background-color: #57b846;*/
+}
+.btom{
+    /*background-color: #9646b8;*/
+}
+
+.MyGoodsInfoIsShow{
+    display: flex;
+    width: 90%;
+}
+.MyGoodsInfoIsShow li{
+    float: left;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 20px;
+    line-height: 33px;
+}
+.clear:after{
+
+    content: "";
+
+    display: block;
+
+    clear: both;
+
+}
+
+
+
+.card-text {
+    font-size: 24px;
+}
+
+.card-item {
+    margin-bottom: 18px;
+}
+.card-item .el-tag{
+    font-size: 17px;
+}
+
+.card-clearfix:before,
+.card-clearfix:after {
+    display: table;
+    content: "";
+}
+.card-clearfix:after {
+    clear: both
+}
+
+.box-card {
+    width: 480px;
+    line-height: 40px;
+}
+
+
+.outdialog{
+    line-height: 20px;
 }

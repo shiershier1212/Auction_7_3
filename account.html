@@ -7,14 +7,15 @@
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <link rel="stylesheet" href="./css/account.css">
-    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="./css/common.css">
+    <link rel="stylesheet" href="./css/base.css">
     <title>个人页面</title>
 </head>
 <body>
 <div id="accountapp">
     <el-container>
         <el-header>
-            <el-menu class="el-menu-demo" mode="horizontal" >
+            <el-menu class="el-menu-demo" mode="horizontal">
                 <el-menu-item index="4" style="float: right"><a href="account.html" target="_blank">个人页面</a>
                 </el-menu-item>
                 <el-menu-item index="3" style="float: right">我的收藏</el-menu-item>
@@ -26,21 +27,175 @@
             <el-aside width="400px">
                 <div class="userImage">
                     <img class="userimg" src="./img/img-01.png" alt="">
-                    <el-tag type="success">{{user.name}}</el-tag>
-                    <el-tag type="success">￥{{user.money}}</el-tag>
+                    <el-tag type="success" style="width: 80px;margin-bottom: 5px">
+                        {{user.name}}
+                    </el-tag>
+                    <el-tag type="success" style="width: 80px">￥{{user.money}}</el-tag>
 
                 </div>
                 <div class="someButton">
-                    <el-button type="success" class="btn" style="margin-left: 10px">个人信息</el-button>
-                    <el-button type="success" class="btn" onclick="setUserInfo()">我的宝贝</el-button>
-                    <el-button type="success" class="btn">成功按钮</el-button>
-                    <el-button type="success" class="btn" @click="outLogin">退出登录</el-button>
+                    <el-button type="success" class="btn" style="margin-left: 10px" @click="setTheShow(1)">用户信息
+                    </el-button>
+                    <el-button type="success" class="btn" @click="setTheShow(2)">我的宝贝</el-button>
+                    <el-button type="success" class="btn" @click="setTheShow(3)">注册商品</el-button>
+                    <el-button type="success" class="btn" @click="setTheShow(4)">管理商品</el-button>
+                    <el-button type="success" class="btn" @click="dialogVisible=true">退出登录</el-button>
                 </div>
             </el-aside>
             <el-container>
-                <el-main>
+                <el-main class="right">
+                    <!--                    个人信息界面-->
+                    <div style="width: 80%;height: 70%" v-if="userInfoIsShow">
+                        <el-card class="box-card">
+                            <div slot="header" class="card-clearfix">
+                                <span style="float: left">个人信息</span>
+                                <el-button style="float: right; padding: 3px 0" type="text" onclick="setUserInfo()">
+                                    更新信息
+                                </el-button>
+                            </div>
+                            <div class="card-text card-item">
+                                <el-tag type="success">ID：{{user.id}}</el-tag>
+                            </div>
+                            <div class="card-text card-item">
+                                <el-tag type="success">电话号码：{{user.phone_number}}</el-tag>
+                            </div>
+                            <div class="card-text card-item">
+                                <el-tag type="success">昵称：{{user.name}}</el-tag>
+                            </div>
+                            <div class="card-text card-item">
+                                <el-tag type="success">账户余额：{{user.money}}</el-tag>
+                            </div>
+                        </el-card>
+                    </div>
+                    <!--                    我的商品界面-->
+                    <div v-show="MyGoodsInfoIsShow" class="MyGoodsInfoIsShow">
+                        <ul>
+                            <li v-for="(item,index) in myGoodsList">
+                                <div class="goodsview">
+                                    <div class="goodsImage">
+                                        <img src="img/img-01.png" alt="" style="width: 288px;height: 286px">
+                                    </div>
+                                    <div style="background-color: #ffffff">
+                                        <p style="font-size: 18px;margin-bottom: 5px;margin-top: 5px">{{item.name}}</p>
+                                        <p style="font-size: 25px;color: red">
+                                            <span style="font-size: 18px;color: red">￥</span>
+                                            {{item.min_prices}}
+                                        </p>
+                                        <p style="font-size: 14px">{{item.duration}}</p>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <!--                    商品注册界面-->
+                    <div style="width: 90%" v-show="GoodsReInfoIsShow">
+                        <el-form :model="goods" ref="goodsForm" label-width="150px">
+                            <el-form-item label="商品名称：">
+                                <el-input v-model="goods.name" style="width: 300px;float: left"></el-input>
+                            </el-form-item>
 
+                            <el-form-item label="商品描述：">
+                                <el-input v-model="goods.description" style="width: 540px;float: left"></el-input>
+                            </el-form-item>
 
+                            <el-form-item label="售卖者名字：">
+                                <el-input v-model="user.name" style="width: 100px;float: left"></el-input>
+                            </el-form-item>
+
+                            <el-form-item label="商品起拍价格：">
+                                <el-input v-model="goods.min_prices" style="width: 100px;float: left"></el-input>
+                                <label style="float: left">元</label>
+                            </el-form-item>
+
+                            <el-form-item label="商品买断价格：">
+                                <el-input v-model="goods.buyout_prices" style="width: 100px;float: left"></el-input>
+                                <label style="float: left">元</label>
+                            </el-form-item>
+
+                            <el-form-item label="商品拍卖持续时间：">
+                                <el-input v-model="goods.duration" style="width: 100px;float: left"></el-input>
+                                <label style="float: left">（默认240小时）</label>
+                            </el-form-item>
+
+                            <el-form-item label="商品图片链接：">
+                                <el-input v-model="goods.image_url" style="width: 540px;float: left"></el-input>
+                            </el-form-item>
+
+                            <el-form-item>
+                                <el-button :plain="true" type="primary" @click="submitForm">立即注册</el-button>
+                                <el-button @click="resetForm">重置</el-button>
+                            </el-form-item>
+                        </el-form>
+                    </div>
+
+<!--                    商品管理-->
+                    <div v-show="myGoodsControl">
+                        商品管理
+                        <template>
+                            <el-table
+                                    :data="myGoodsList"
+                                    stripe
+                                    style="width: 100%" class="goodsTable">
+                                <el-table-column
+                                        prop="name"
+                                        label="名字"
+                                        width="80">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="description"
+                                        label="商品描述"
+                                        width="180">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="min_prices"
+                                        label="起拍价格"
+                                        width="80">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="max_prices"
+                                        label="成交价格"
+                                        width="80">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="buyout_prices"
+                                        label="买断价格"
+                                        width="80">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="created_at"
+                                        label="创建时间"
+                                        width="180">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="deal_at"
+                                        label="成交时间"
+                                        width="180">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="status"
+                                        label="状态"
+                                        width="80">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="duration"
+                                        label="倒计时"
+                                        width="80">
+                                </el-table-column>
+                            </el-table>
+                        </template>
+                    </div>
+
+                    <!--                    退出登录框弹出-->
+                    <el-dialog
+                            title="提示"
+                            :visible.sync="dialogVisible"
+                            width="30%"
+                            class="outdialog">
+                        <span>您确定退出吗？</span>
+                        <span slot="footer" class="dialog-footer">
+                        <el-button @click="dialogVisible=false">取 消</el-button>
+                        <el-button type="primary" @click="outLogin">确 定</el-button></span>
+                    </el-dialog>
                 </el-main>
             </el-container>
         </el-container>
@@ -49,4 +204,3 @@
 <script src="js/account.js"></script>
 </body>
 </html>
-
