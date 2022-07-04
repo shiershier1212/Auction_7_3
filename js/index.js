@@ -13,7 +13,7 @@ let app = new Vue({
     methods: {
         get() {
             let that = this
-            axios.get("http://localhost:8080/users")
+            axios.get("http://localhost:8081/users")
                 .then(res => {
                     console.log(res)
                     that.userList = res.data.data
@@ -27,7 +27,7 @@ let app = new Vue({
                 return
             }
             let that = this
-            axios.get("http://localhost:8080/users/" + this.loginpn)
+            axios.get("http://localhost:8081/users/" + this.loginpn)
                 .then(res => {
                     console.log(res)
                     // that.userList = res.data.data
@@ -36,8 +36,9 @@ let app = new Vue({
                         return
                     }
                     if (that.loginps === res.data.data.password) {
-                        alert("密码正确！")
-                        window.location.href="../account.html"
+                        // alert("密码正确！")
+                        window.location.href="account.html"
+                        localStorage.nowLoginUserPhoneNumber = that.loginpn
                     } else {
                         alert("密码不正确！")
                     }
@@ -52,7 +53,7 @@ let app = new Vue({
                 return
             }
             let that = this
-            axios.post("http://localhost:8080/users", this.user)
+            axios.post("http://localhost:8081/users", this.user)
                 .then(function (res) {
                     console.log(res)
                 })
@@ -60,8 +61,9 @@ let app = new Vue({
                     console.log(res)
                 })
         },
-        tiaozhuan(){
-            window.location.href="../account.html"
-        }
+
     }
 })
+
+
+

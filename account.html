@@ -8,14 +8,13 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <link rel="stylesheet" href="./css/account.css">
     <link rel="stylesheet" href="css/common.css">
-
     <title>个人页面</title>
 </head>
 <body>
-<div id="app">
+<div id="accountapp">
     <el-container>
         <el-header>
-            <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+            <el-menu class="el-menu-demo" mode="horizontal" >
                 <el-menu-item index="4" style="float: right"><a href="account.html" target="_blank">个人页面</a>
                 </el-menu-item>
                 <el-menu-item index="3" style="float: right">我的收藏</el-menu-item>
@@ -33,9 +32,9 @@
                 </div>
                 <div class="someButton">
                     <el-button type="success" class="btn" style="margin-left: 10px">个人信息</el-button>
-                    <el-button type="success" class="btn">我的宝贝</el-button>
+                    <el-button type="success" class="btn" onclick="setUserInfo()">我的宝贝</el-button>
                     <el-button type="success" class="btn">成功按钮</el-button>
-                    <el-button type="success" class="btn">退出登录</el-button>
+                    <el-button type="success" class="btn" @click="outLogin">退出登录</el-button>
                 </div>
             </el-aside>
             <el-container>
@@ -47,8 +46,6 @@
         </el-container>
     </el-container>
 </div>
-
-
 <script src="js/account.js"></script>
 </body>
 </html>
