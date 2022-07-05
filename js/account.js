@@ -2,7 +2,7 @@
 window.onload = setUserInfo
 
 let user = {
-    id: 11111,
+    id: localStorage["nowLoginUserId"],
     name: "用户名字",
     phone_number: localStorage["nowLoginUserPhoneNumber"],
     money: "10000",
@@ -18,8 +18,9 @@ let goods = {
     max_prices: null,
     buyout_prices: 2,
     create_at: null,
+    finished_at:"",
     status: null,
-    duration: 240,
+    duration: "",
     image_url: null
 }
 
@@ -127,6 +128,10 @@ let accountapp = new Vue({
         },
         submitForm() {
             //注册商品
+            if(this.user===-1){
+                this.$message.error("请先登录！！！");
+                return;
+            }
             if (goods.name === "" || goods.description === "" || goods.min_prices === "" || goods.buyout_prices === "") {
                 this.$message.error("请输入完整的信息！");
                 return;
@@ -167,14 +172,24 @@ let accountapp = new Vue({
             //index是下标，row是这一行的数据
             // console.log(index)
             // console.log(row.id)
-            if (row.status === 1) {
-                //如果此商品正在拍卖，那么结束拍卖，得出赢家
-                row.status = 2
+            if (row.status === "正进行") {
+                //如果此商品正在拍卖，那么先将状态置为结束，等到进入对应的商品页面时，更新信息
+                //得出赢家
+                let g={
+                    id:row.id,
+                    finished_at: new Date().getTime()
+                }
+                axios.put("http://localhost:8081/goods/updateById", g)
+                        .then(res => {
+                            console.log(res.data)
+                        })
+                        .catch(res => {
+                        })
             }
         },
         handleDelete(index, row) {
             //删除该商品的记录
-            if (row.status === 2) {
+            if (row.status === "已结束") {
                 axios.delete("http://localhost:8081/goods/" + row.id)
                         .then(res => {
                             if (res.data.status === "ok") {
@@ -188,13 +203,30 @@ let accountapp = new Vue({
                             console.log(res)
                             this.$message.error("删除失败！")
                         })
-            } else if (row.status === 1) {
+            } else if (row.status === "正进行") {
                 this.$message.error("商品还未结束拍卖！")
             }
+        },
+
+        //表格的
+        GoTOGoodsInfo(index,row){
+            localStorage.nowGoodId = row.goods_id
+            window.location.href="goodsinfo.html"
+        },
+        //div的
+        goToTheGoodsInfo(i){
+            localStorage.nowGoodId = i
+            window.location.href="goodsinfo.html"
         }
 
 
     },
+    mounted() {
+
+    },
+    beforeDestroy() {
+
+    }
 })
 
 

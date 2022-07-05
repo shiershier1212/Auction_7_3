@@ -1,0 +1,160 @@
+.el-header, .el-footer {
+    background-color: #B3C0D1;
+    color: #333;
+    text-align: center;
+    line-height: 60px;
+}
+
+.el-aside {
+    background-color: #D3DCE6;
+    color: #333;
+    text-align: center;
+    line-height: 200px;
+}
+
+.el-main {
+    background-color: #E9EEF3;
+    color: #333;
+    text-align: center;
+    line-height: 160px;
+}
+
+body > .el-container {
+    margin-bottom: 40px;
+}
+
+.el-container:nth-child(5) .el-aside,
+.el-container:nth-child(6) .el-aside {
+    line-height: 260px;
+}
+
+.el-container:nth-child(7) .el-aside {
+    line-height: 320px;
+}
+a{
+    text-decoration: none;
+}
+
+a:-webkit-any-link {
+    text-decoration: none;
+}
+
+.info{
+    background-color: #ffffff;
+    display: block;
+    width: 65%;
+    height: 1200px;
+    margin: 0 auto;
+    margin-top: 5px;
+}
+
+.top{
+    background-color: #ffffff;
+    /*display: block;*/
+    height: 35%;
+    display: flex;
+    border-color: #c8c8c8;
+    border-style: solid;
+}
+.left{
+    background-color: #ffffff;
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.left img{
+    width: 80%;
+    height: 80%;
+    background-color: #ffffff;
+}
+
+.right{
+    background-color: #f3f3f3;
+    width: 50%;
+}
+.right h1{
+    margin-left: 30px;
+}
+
+.prices{
+    color: #c21f3a;
+}
+
+.span{
+    font-size: 12px;
+    color: #5f5f5f;
+    margin-right: 20px;
+}
+
+.spanyuan{
+    font-size: 13px;
+    color: #c21f3a;
+    margin-left: 10px;
+}
+
+.top .el-input{
+    width: 250px;
+    display: inline-block;
+}
+.top .el-input .el-input__inner {
+    height: 53px;
+}
+.right .el-button--danger {
+    background-color: #c21f3a;
+    width: 250px;
+    line-height: 2;
+    margin-left: 83px;
+}
+.el-divider--horizontal {
+    display: block;
+    height: 1px;
+    width: 100%;
+    margin: 24px 0;
+}
+.el-divider {
+    background-color: #c4c4c4;
+    position: relative;
+}
+
+.bottom{
+    border-color: #c8c8c8;
+    border-style: solid;
+    margin-top: 60px;
+}
+
+
+.center{
+    margin-top: 2px;
+    background-color: #ffffff;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.center .el-card .is-hover-shadow{
+    width: 100%;
+}
+.center .el-col-8 {
+    margin: 0 auto;
+    width: 988px;
+    height: 150px;
+}
+.el-card{
+    height: 100%;
+}
+h1 .tt{
+    margin-left: 3px;
+    font-size: 15px;
+    color: #575757;
+}
+
+#goodsInfoApp{
+    background-color: #eeeeee;
+}
+
+.el-card__body, .el-main {
+    padding: 0px;
+}

@@ -5,6 +5,14 @@
     line-height: 60px;
 }
 
+a {
+    text-decoration: none;
+}
+
+a:-webkit-any-link {
+    text-decoration: none;
+}
+
 .el-aside {
     background-color: #D3DCE6;
     color: #333;
@@ -36,14 +44,15 @@
     height: 390px;
     /*background-color: #d0eec9;*/
 }
-.someButton .btn{
+
+.someButton .btn {
     height: 67px;
 }
 
 .btn {
     width: 280px;
     height: 70px;
-    margin-bottom: 10px;
+    margin-bottom: 0px;
 }
 
 .el-main {
@@ -71,29 +80,33 @@ body > .el-container {
     line-height: 320px;
 }
 
-.goodsview{
-    background-color: #e0e0e0;
-    height: 398px;
+.goodsview {
+    background-color: #f1f1f1;
+    height: 365px;
 }
-.goodsImage{
+
+.goodsImage {
     /*background-color: #57b846;*/
 }
-.btom{
+
+.btom {
     /*background-color: #9646b8;*/
 }
 
-.MyGoodsInfoIsShow{
+.MyGoodsInfoIsShow {
     display: flex;
     width: 90%;
 }
-.MyGoodsInfoIsShow li{
+
+.MyGoodsInfoIsShow li {
     float: left;
     margin-left: 10px;
     margin-right: 10px;
     margin-bottom: 20px;
     line-height: 33px;
 }
-.clear:after{
+
+.clear:after {
 
     content: "";
 
@@ -104,7 +117,6 @@ body > .el-container {
 }
 
 
-
 .card-text {
     font-size: 24px;
 }
@@ -112,7 +124,8 @@ body > .el-container {
 .card-item {
     margin-bottom: 18px;
 }
-.card-item .el-tag{
+
+.card-item .el-tag {
     font-size: 17px;
 }
 
@@ -121,6 +134,7 @@ body > .el-container {
     display: table;
     content: "";
 }
+
 .card-clearfix:after {
     clear: both
 }
@@ -129,12 +143,15 @@ body > .el-container {
     width: 480px;
     line-height: 40px;
 }
+.box-card .card-item{
+    text-align: left;
+}
 
-
-.outdialog{
+.outdialog {
     line-height: 20px;
 }
 
 .el-divider--horizontal {
     width: 900px;
 }
+

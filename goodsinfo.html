@@ -6,11 +6,103 @@
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="css/goodsinfo.css">
     <title>商品详情页面</title>
 </head>
 <body>
-<div id="">
+<div id="goodsInfoApp">
+    <!--            头部-->
+    <el-menu class="el-menu-demo" mode="horizontal">
+        <el-menu-item index="4" style="float: right"><a href="account.html" target="_blank">个人页面</a>
+        </el-menu-item>
+        <el-menu-item index="3" style="float: right">我的收藏</el-menu-item>
+        <el-menu-item index="2" style="float: right">我的消息</el-menu-item>
+        <el-menu-item index="1" style="float: right"><a href="main.html" target="_blank">拍卖主页</a></el-menu-item>
+    </el-menu>
+
+    <div class="info">
+        <div class="top">
+            <div class="left">
+                <img :src="goods.image_url" alt="">
+            </div>
+            <div class="right">
+                <h1>{{goods.name}}</h1>
+                <h1><span class="span">距结束
+                </span>{{time.d}}<span class="tt">天</span>
+                    {{time.h}}<span class="tt">时</span>
+                    {{time.m}}<span class="tt">分</span>
+                    {{time.s}}<span class="tt">秒</span>
+                </h1>
+                <h1 class="prices">
+                    <span class="span">当前价</span>
+                    <!--                    {{goods.max_prices}}-->
+                    {{thisGoodsMaxPrices}}
+                    <span class="spanyuan">元</span></h1>
+                <h1><span class="span">出价</span>
+                    <el-input v-model="mybidprices" placeholder="请输入竞价"></el-input>
+                </h1>
+                <el-button type="danger" @click="dialogVisible = true">我要竞价</el-button>
+                <h1>
+                    <el-tag type="info" v-show="!canbid" style="font-size: 26px;margin-left: 53px">
+                        竞拍已经结束
+                    </el-tag>
+                </h1>
+            </div>
+        </div>
+
+        <el-dialog
+                title="确认信息"
+                :visible.sync="dialogVisible"
+                width="30%">
+            <span>您确定参与竞价？？</span>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="bidGoods">确 定</el-button>
+            </span>
+        </el-dialog>
+
+        <!--        <el-divider></el-divider>-->
+        <div class="center">
+            <el-row :gutter="12">
+                <el-col :span="8">
+                    <el-card shadow="hover">
+                        <h4 style="margin-left: 20px">商品起拍价: {{goods.min_prices}} 元</h4>
+                        <h4 style="margin-left: 20px">最低加价：1 元</h4>
+                        <h4 style="margin-left: 20px;margin-bottom: 20px">商品简介：{{goods.description}}</h4>
+                    </el-card>
+                </el-col>
+            </el-row>
+        </div>
+        <div class="bottom">
+            <el-table
+                    ref="singleTable"
+                    :data="auctionsList"
+                    highlight-current-row
+                    style="width: 100%">
+                <el-table-column
+                        type="index"
+                        label="序号"
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        property="buy_user_id"
+                        label="参与者ID"
+                        width="200">
+                </el-table-column>
+                <el-table-column
+                        property="buy_user_prices"
+                        label="竞价"
+                        width="200">
+                </el-table-column>
+
+            </el-table>
+
+        </div>
+        <el-empty :image-size="200"></el-empty>
+    </div>
+
 
 </div>
+<script src="js/goodsInfo.js"></script>
 </body>
 </html>

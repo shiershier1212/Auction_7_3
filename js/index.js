@@ -38,7 +38,7 @@ let app = new Vue({
                         this.$message({message:"登录成功！",type:"success"})
                         window.location.href="account.html"
                         localStorage.nowLoginUserPhoneNumber = that.loginpn
-                        // localStorage.noLoginUserId = res.data.data.id
+                        localStorage.nowLoginUserId = res.data.data.id
                     } else {
                         this.$message.error("登录失败，请检查账号或者密码！")
                     }
