@@ -36,9 +36,9 @@
                 <div class="someButton">
                     <el-button type="success" class="btn" style="margin-left: 10px" @click="setTheShow(1)">用户信息
                     </el-button>
-                    <el-button type="success" class="btn" @click="setTheShow(2)">我的宝贝</el-button>
                     <el-button type="success" class="btn" @click="setTheShow(3)">注册商品</el-button>
-                    <el-button type="success" class="btn" @click="setTheShow(4)">管理商品</el-button>
+                    <el-button type="success" class="btn" @click="setTheShow(2)">我的商品</el-button>
+                    <el-button type="success" class="btn" @click="setTheShow(4)">拍卖管理</el-button>
                     <el-button type="success" class="btn" @click="dialogVisible=true">退出登录</el-button>
                 </div>
             </el-aside>
@@ -67,16 +67,19 @@
                             </div>
                         </el-card>
                     </div>
-                    <!--                    我的商品界面-->
+
+                    <!--                    我注册的商品界面-->
                     <div v-show="MyGoodsInfoIsShow" class="MyGoodsInfoIsShow">
+                        <!--                        注册的商品-->
                         <ul>
                             <li v-for="(item,index) in myGoodsList">
                                 <div class="goodsview">
                                     <div class="goodsImage">
-                                        <img src="img/img-01.png" alt="" style="width: 288px;height: 286px">
+                                        <img :src="item.image_url" alt="" style="width: 288px;height: 286px">
                                     </div>
                                     <div style="background-color: #ffffff">
-                                        <p style="font-size: 18px;margin-bottom: 5px;margin-top: 5px">{{item.name}}</p>
+                                        <p style="font-size: 18px;margin-bottom: 5px;margin-top: 5px">
+                                            {{item.name}}</p>
                                         <p style="font-size: 25px;color: red">
                                             <span style="font-size: 18px;color: red">￥</span>
                                             {{item.min_prices}}
@@ -87,8 +90,40 @@
                             </li>
                         </ul>
                     </div>
+                    <div v-show="MyGoodsInfoIsShow">
+                        <span>我注册的商品↑</span>
+                        <el-divider></el-divider>
+                        <span>我拍到的商品↓</span>
+                    </div>
+                    <!--                    我拍到的商品-->
+                    <div v-show="MyGoodsInfoIsShow" class="MyGoodsInfoIsShow">
+                        <ul>
+                            <li v-for="(item,index) in myOwnGoodsList">
+                                <div class="goodsview">
+                                    <div class="goodsImage">
+                                        <img :src="item.image_url" alt="" style="width: 288px;height: 286px">
+                                    </div>
+                                    <div style="background-color: #ffffff">
+                                        <p style="font-size: 18px;margin-bottom: 5px;margin-top: 5px">
+                                            {{item.name}}</p>
+                                        <p style="font-size: 25px;color: red">
+                                            <span style="font-size: 18px;color: red">￥</span>
+                                            {{item.min_prices}}
+                                        </p>
+                                        <p style="font-size: 14px">{{item.duration}}</p>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+
                     <!--                    商品注册界面-->
                     <div style="width: 90%" v-show="GoodsReInfoIsShow">
+                        <el-tag type="warning" style="font-size: 30px;width: 160px;height: 45px;
+                        line-height: 45px;margin-bottom: 20px"
+                                size="medium">商品注册
+                        </el-tag>
                         <el-form :model="goods" ref="goodsForm" label-width="150px">
                             <el-form-item label="商品名称：">
                                 <el-input v-model="goods.name" style="width: 300px;float: left"></el-input>
@@ -128,9 +163,9 @@
                         </el-form>
                     </div>
 
-<!--                    商品管理-->
+                    <!--                    拍卖管理-->
                     <div v-show="myGoodsControl">
-                        商品管理
+                        <p>我创建的拍卖</p>
                         <template>
                             <el-table
                                     :data="myGoodsList"
@@ -144,46 +179,104 @@
                                 <el-table-column
                                         prop="description"
                                         label="商品描述"
-                                        width="180">
+                                        width="150">
                                 </el-table-column>
                                 <el-table-column
                                         prop="min_prices"
                                         label="起拍价格"
-                                        width="80">
+                                        width="90">
                                 </el-table-column>
                                 <el-table-column
                                         prop="max_prices"
                                         label="成交价格"
-                                        width="80">
+                                        width="90">
                                 </el-table-column>
                                 <el-table-column
                                         prop="buyout_prices"
                                         label="买断价格"
-                                        width="80">
+                                        width="90">
                                 </el-table-column>
                                 <el-table-column
                                         prop="created_at"
                                         label="创建时间"
-                                        width="180">
+                                        width="90">
                                 </el-table-column>
                                 <el-table-column
                                         prop="deal_at"
                                         label="成交时间"
-                                        width="180">
+                                        width="90">
                                 </el-table-column>
                                 <el-table-column
                                         prop="status"
                                         label="状态"
-                                        width="80">
+                                        width="60">
                                 </el-table-column>
                                 <el-table-column
                                         prop="duration"
                                         label="倒计时"
                                         width="80">
                                 </el-table-column>
+                                <el-table-column label="操作" width="170">
+                                    <template slot-scope="scope">
+                                        <el-button
+                                                size="mini"
+                                                @click="handleDeal(scope.$index, scope.row)">结束拍卖
+                                        </el-button>
+                                        <el-button
+                                                size="mini"
+                                                type="danger"
+                                                @click="handleDelete(scope.$index, scope.row)">删除
+                                        </el-button>
+                                    </template>
+                                </el-table-column>
                             </el-table>
                         </template>
                     </div>
+
+
+<!--                    我参与的拍卖-->
+                    <div v-show="myGoodsControl">
+                        <p>我参与的拍卖</p>
+                        <template>
+                            <el-table
+                                    :data="myAuctionsObj"
+                                    stripe
+                                    style="width: 100%" class="goodsTable">
+                                <el-table-column
+                                        prop="goods_id"
+                                        label="编号"
+                                        width="80">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="buy_user_prices"
+                                        label="我的竞价"
+                                        width="90">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="status"
+                                        label="状态"
+                                        width="60">
+                                </el-table-column>
+                                <el-table-column label="操作" width="170">
+                                    <template slot-scope="scope">
+                                        <el-button size="mini" @click="handleDeal(scope.$index, scope.row)">
+                                            取消竞拍
+                                        </el-button>
+                                        <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">
+                                            详情
+                                        </el-button>
+                                    </template>
+                                </el-table-column>
+                            </el-table>
+                        </template>
+                    </div>
+
+
+
+
+
+
+
 
                     <!--                    退出登录框弹出-->
                     <el-dialog

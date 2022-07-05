@@ -134,3 +134,7 @@ body > .el-container {
 .outdialog{
     line-height: 20px;
 }
+
+.el-divider--horizontal {
+    width: 900px;
+}

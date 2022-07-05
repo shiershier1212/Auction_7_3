@@ -43,7 +43,11 @@ let accountapp = new Vue({
     data: {
         user: user,
         goods: goods,
-        myGoodsList: [],
+
+        myGoodsList: [],//我注册的商品
+        myOwnGoodsList: [],//我拍卖到的商品
+        myAuctionsObj:[],//我参与的拍卖
+
         dialogVisible: false,
         userInfoIsShow: true,
         MyGoodsInfoIsShow: false,
@@ -64,10 +68,21 @@ let accountapp = new Vue({
                     break
                 case 2:
                     let that = this
+                        //获取自己注册的商品
                     axios.get("http://localhost:8081/goods/" + user.id)
                             .then(res => {
                                 console.log(res)
                                 that.myGoodsList = res.data.data
+                            })
+                            .catch(res => {
+                                console.log(res)
+                            })
+
+                        //获取自己购买到的商品
+                    axios.get("http://localhost:8081/goods/mybuy/" + user.id)
+                            .then(res => {
+                                console.log(res)
+                                that.myOwnGoodsList = res.data.data
                             })
                             .catch(res => {
                                 console.log(res)
@@ -85,10 +100,20 @@ let accountapp = new Vue({
                     break
                 case 4:
                     let t = this
+                        //获取自己注册的商品
                     axios.get("http://localhost:8081/goods/" + user.id)
                             .then(res => {
                                 console.log(res)
                                 t.myGoodsList = res.data.data
+                            })
+                            .catch(res => {
+                                console.log(res)
+                            })
+                        // 获取自己的竞拍记录
+                    axios.get("http://localhost:8081/auctions/myin/" + user.id)
+                            .then(res => {
+                                console.log(res)
+                                t.myAuctionsObj = res.data.data
                             })
                             .catch(res => {
                                 console.log(res)
@@ -103,16 +128,29 @@ let accountapp = new Vue({
         submitForm() {
             //注册商品
             if (goods.name === "" || goods.description === "" || goods.min_prices === "" || goods.buyout_prices === "") {
-                alert("请输入完整的信息！")
+                this.$message.error("请输入完整的信息！");
+                return;
+            }
+            if (goods.min_prices > goods.buyout_prices) {
+                this.$message.error("买断价格不能低于起拍价格！");
+                return;
             }
             axios.post("http://localhost:8081/goods", this.goods)
                     .then(res => {
                         console.log(res)
-                        this.$message({message: "商品注册成功！", type: "success"});
+                        if (res.data.status === "ok") {
+                            this.$message({message: "商品注册成功！", type: "success"});
+                        } else {
+                            this.$notify({
+                                title: '注册商品失败',
+                                message: res.data.data,
+                                duration: 0
+                            });
+                        }
                     })
                     .catch(res => {
                         console.log(res)
-                        this.$message.error("商品注册失败！");
+                        this.$message.error("商品注册失败！" + res.data.data);
                     })
         },
         resetForm() {
@@ -122,20 +160,40 @@ let accountapp = new Vue({
             goods.buyout_prices = 2
             goods.duration = 240
         },
-        // getMyAllGoods() {
-        //     let that = this
-        //     axios.get("http://localhost:8081/goods/" + this.user.id)
-        //             .then(res => {
-        //                 console.log(res)
-        //                 that.myGoodsList = res.data.data
-        //             })
-        //             .catch(res => {
-        //                 console.log(res)
-        //             })
-        // },
         outLogin() {
             window.location.href = "login.html"
+        },
+        handleDeal(index, row) {
+            //index是下标，row是这一行的数据
+            // console.log(index)
+            // console.log(row.id)
+            if (row.status === 1) {
+                //如果此商品正在拍卖，那么结束拍卖，得出赢家
+                row.status = 2
+            }
+        },
+        handleDelete(index, row) {
+            //删除该商品的记录
+            if (row.status === 2) {
+                axios.delete("http://localhost:8081/goods/" + row.id)
+                        .then(res => {
+                            if (res.data.status === "ok") {
+                                this.$message({message: "删除成功！", type: "success"})
+                            } else {
+                                console.log(res)
+                                this.$message.error("删除失败！")
+                            }
+                        })
+                        .catch(res => {
+                            console.log(res)
+                            this.$message.error("删除失败！")
+                        })
+            } else if (row.status === 1) {
+                this.$message.error("商品还未结束拍卖！")
+            }
         }
+
+
     },
 })
 

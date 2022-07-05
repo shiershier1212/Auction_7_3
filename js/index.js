@@ -57,9 +57,15 @@ let app = new Vue({
             axios.post("http://localhost:8081/users", this.user)
                 .then(function (res) {
                     console.log(res)
+                    if(res.data.status==="ok"){
+                        this.$message({message:"注册成功！",type:"success"})
+                    }else {
+                        this.$message.error("注册失败！"+res.data)
+                    }
                 })
                 .catch(res => {
                     console.log(res)
+                    this.$message.error("注册失败！"+res.data)
                 })
         },
 
