@@ -18,9 +18,9 @@ let goods = {
     max_prices: 1,
     buyout_prices: 2,
     create_at: null,
-    finished_at:"",
+    finished_at: "",
     status: null,
-    image_url: null
+    image_url: "img/goodsImg/g (24).jpg",
 }
 
 //初始化用户信息的方法
@@ -46,7 +46,7 @@ let accountapp = new Vue({
 
         myGoodsList: [],//我注册的商品
         myOwnGoodsList: [],//我拍卖到的商品
-        myAuctionsObj:[],//我参与的拍卖
+        myAuctionsObj: [],//我参与的拍卖
 
         dialogVisible: false,
         userInfoIsShow: true,
@@ -68,7 +68,7 @@ let accountapp = new Vue({
                     break
                 case 2:
                     let that = this
-                        //获取自己注册的商品
+                    //获取自己注册的商品
                     axios.get("http://localhost:8081/goods/" + user.id)
                             .then(res => {
                                 console.log(res)
@@ -78,7 +78,7 @@ let accountapp = new Vue({
                                 console.log(res)
                             })
 
-                        //获取自己购买到的商品
+                    //获取自己购买到的商品
                     axios.get("http://localhost:8081/goods/mybuy/" + user.id)
                             .then(res => {
                                 console.log(res)
@@ -100,7 +100,7 @@ let accountapp = new Vue({
                     break
                 case 4:
                     let t = this
-                        //获取自己注册的商品
+                    //获取自己注册的商品
                     axios.get("http://localhost:8081/goods/" + user.id)
                             .then(res => {
                                 console.log(res)
@@ -109,7 +109,7 @@ let accountapp = new Vue({
                             .catch(res => {
                                 console.log(res)
                             })
-                        // 获取自己的竞拍记录
+                    // 获取自己的竞拍记录
                     axios.get("http://localhost:8081/auctions/myin/" + user.id)
                             .then(res => {
                                 console.log(res)
@@ -127,7 +127,7 @@ let accountapp = new Vue({
         },
         submitForm() {
             //注册商品
-            if(this.user===-1){
+            if (this.user === -1) {
                 this.$message.error("请先登录！！！");
                 return;
             }
@@ -168,60 +168,76 @@ let accountapp = new Vue({
         outLogin() {
             window.location.href = "login.html"
         },
-        handleDeal(index, row) {
+        endTheAuction(index, row) {
             //index是下标，row是这一行的数据
-            // console.log(index)
-            // console.log(row.id)
             if (row.status === "正进行") {
-                //如果此商品正在拍卖，那么先将状态置为结束，等到进入对应的商品页面时，更新信息
-                //得出赢家
-                let g={
-                    id:row.id,
-                    finished_at: new Date().getTime()
+                //直接将商品的结束时间变成当前的时间，然后打开对应的商品
+                let g = {
+                    id: row.id,
+                    finished_at: new Date()
                 }
                 axios.put("http://localhost:8081/goods/updateById", g)
                         .then(res => {
                             console.log(res.data)
+                            localStorage.nowGoodId = row.id
+                            window.location.href = "goodsinfo.html"
                         })
                         .catch(res => {
                             console.log(res.data)
                         })
             }
         },
-        handleDelete(index, row) {
-            //删除该商品的记录
+        goToTheGoodsInfo2(index, row) {
+            localStorage.nowGoodId = row.id
+            window.location.href = "goodsinfo.html"
+        },
+        // deleteThisGoodsInfo(index, row) {
+        //     //删除该商品的记录
+        //     if (row.status === "已结束") {
+        //         axios.delete("http://localhost:8081/goods/" + row.id)
+        //                 .then(res => {
+        //                     if (res.data.status === "ok") {
+        //                         this.$message({message: "删除成功！", type: "success"})
+        //                     } else {
+        //                         console.log(res)
+        //                         this.$message.error("删除失败！")
+        //                     }
+        //                 })
+        //                 .catch(res => {
+        //                     console.log(res)
+        //                     this.$message.error("删除失败！")
+        //                 })
+        //     } else if (row.status === "正进行") {
+        //         this.$message.error("商品还未结束拍卖！")
+        //     }
+        // },
+        //表格的
+        GoTOGoodsInfo(index, row) {
+            localStorage.nowGoodId = row.goods_id
+            window.location.href = "goodsinfo.html"
+        },
+        //div的
+        goToTheGoodsInfo(i) {
+            localStorage.nowGoodId = i
+            window.location.href = "goodsinfo.html"
+        },
+        //取消自己的拍卖，不拍了
+        cancelMyAuction(index, row) {
             if (row.status === "已结束") {
-                axios.delete("http://localhost:8081/goods/" + row.id)
+                this.$message.error("竞拍已经结束！无法取消！")
+            } else {
+                axios.delete("http://localhost:8081/auctions/deleteByMyId/" + row.buy_user_id)
                         .then(res => {
                             if (res.data.status === "ok") {
-                                this.$message({message: "删除成功！", type: "success"})
+                                this.$message({message: "删除竞拍信息成功！", type: "success"})
                             } else {
-                                console.log(res)
                                 this.$message.error("删除失败！")
                             }
                         })
-                        .catch(res => {
-                            console.log(res)
-                            this.$message.error("删除失败！")
-                        })
-            } else if (row.status === "正进行") {
-                this.$message.error("商品还未结束拍卖！")
             }
         },
-
-        //表格的
-        GoTOGoodsInfo(index,row){
-            localStorage.nowGoodId = row.goods_id
-            window.location.href="goodsinfo.html"
-        },
-        //div的
-        goToTheGoodsInfo(i){
-            localStorage.nowGoodId = i
-            window.location.href="goodsinfo.html"
-        }
-
-
     },
+
     mounted() {
 
     },

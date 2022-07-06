@@ -3,8 +3,7 @@ let app = new Vue({
     data:{
         lunImage:["img/lun/lun1.png","img/lun/lun2.png","img/lun/lun3.png","img/lun/lun4.png"],
         allGoodsList:[],
-
-
+        sear:"",
     },
     methods: {
         // 获取所有的商品信息进行渲染
@@ -20,6 +19,9 @@ let app = new Vue({
         goToTheGoodsInfo(i){
             localStorage.nowGoodId = i
             window.location.href="goodsinfo.html"
+        },
+        goToTheSearchPage(){
+            window.location.href="searchPage.html"
         }
     },
     mounted(){

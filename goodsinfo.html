@@ -33,7 +33,7 @@
                 <li><a href="main.html">破产</a></li>
                 <li><a href="main.html">捡漏</a></li>
                 <li><a href="main.html">精准获客</a></li>
-                <el-input placeholder="标的物名字/地点"></el-input>
+                <el-input placeholder="标的物名字/地点" v-model="search" v-on:click.native="goToTheSearchPage" ></el-input>
 
             </ul>
         </div>
@@ -69,6 +69,9 @@
                 </h1>
                 <el-button type="danger" @click="dialogVisible = true" style="margin-bottom: 5px">我要竞价</el-button>
                 <el-button type="danger" @click="dialogVisibleBuyout = true" v-if="canbid">我要买断</el-button>
+                <el-tag type="success" v-show="isMyGoods" style="font-size: 15px;float: right">
+                    我的商品
+                </el-tag>
                 <h2>
                     <el-tag type="info" v-show="!canbid" style="font-size: 26px;margin-left: 82px">
                         竞拍已经结束

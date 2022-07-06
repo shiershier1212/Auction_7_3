@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="css/mainGoods.css">
+    <link rel="stylesheet" href="css/searchPage.css">
+    <title>搜索界面</title>
+</head>
+<body>
+<div id="searchApp">
+    <!--    网页的头部-->
+    <div class="top">
+        <el-menu class="el-menu-demo" mode="horizontal">
+            <el-menu-item index="4" style="float: right"><a href="account.html" target="_blank">个人页面</a></el-menu-item>
+            <el-menu-item index="3" style="float: right">我的收藏</el-menu-item>
+            <el-menu-item index="2" style="float: right">我的消息</el-menu-item>
+            <el-menu-item index="1" style="float: right"><a href="main.html" target="_blank">拍卖主页</a></el-menu-item>
+        </el-menu>
+    </div>
+
+    <div class="search search_s" style="background-color: rgba(241,241,241,0.85);text-align: center">
+        <div>
+            <el-input placeholder="请输入内容" style="width: 454px;" v-model="wantToSearch"></el-input>
+            <el-button type="primary" icon="el-icon-search" @click="searchGoods">搜索</el-button>
+        </div>
+    </div>
+
+    <div class="allGoods" style="width: 80%;margin: 0 auto">
+        <ul>
+            <li v-for="item in searchGoodsList">
+                <div @click="goToTheGoodsInfo(item.id)">
+                    <img :src="item.image_url" alt="">
+                    <span class="gname">{{item.name}}</span>
+                    <h4 class="nowp">当前价 <span>￥{{item.max_prices}}</span></h4>
+                    <span class="minp">起拍价 <span>￥{{item.min_prices}}</span></span>
+                    <el-tag type="success" v-show="item.status==='正进行'">正进行</el-tag>
+                    <el-tag type="danger" v-show="item.status==='已结束'">已结束</el-tag>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <el-empty description="没有数据哦"></el-empty>
+</div>
+<script src="js/searchPage.js"></script>
+</body>
+</html>

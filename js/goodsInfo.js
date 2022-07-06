@@ -11,14 +11,20 @@ let goodsInfoApp = new Vue({
             m: 0,
             s: 0,
         },
+        nowUserId:localStorage['nowLoginUserId'],
         dialogVisible: false,
         dialogVisibleBuyout: false,
         mybidprices: 100,
         user: null,
         goods: null,
+        // goods: {
+        //     sell_user_id: 1
+        // },
         thisGoodsMaxPrices: 0,
         auctionsList: [],
         canbid: true,
+        search:"",
+        isMyGoods:false,
     },
     methods: {
         setTheGoods() {
@@ -30,6 +36,7 @@ let goodsInfoApp = new Vue({
                             that.thisGoodsMaxPrices = res.data.data.max_prices
                             that.goods = res.data.data//设置商品信息
                             that.canbid = res.data.data.status === "正进行"//看是否可以拍卖
+                            if(res.data.data.sell_user_id === parseInt(localStorage["nowLoginUserId"])){that.isMyGoods=true}
                         } else {
                             console.log(res.data.data)
                         }
@@ -60,7 +67,7 @@ let goodsInfoApp = new Vue({
         },
         // 该方法是在页面更新倒计时
         getTheCountDownTime() {
-            if (this.goods.finished_at === null) clearInterval(c)
+            if (this.goods.finished_at == null) clearInterval(c)
             let EndTime = new Date(this.goods.finished_at)
             let NowTime = new Date();
             let t = EndTime.getTime() - NowTime.getTime()
@@ -74,23 +81,45 @@ let goodsInfoApp = new Vue({
             this.time.h = Math.floor(t / 1000 / 60 / 60 % 24)
             this.time.m = Math.floor(t / 1000 / 60 % 60)
             this.time.s = Math.floor(t / 1000 % 60)
+
+            // if(this.goods!=null){
+            //     console.log(this.goods.sell_user_id)
+            //     console.log(localStorage["nowLoginUserId"])
+            // }
         },
 
         // 在打开页面时更新，结束拍卖
         endTheAuctions() {
-            // console.log("结束拍卖")
+            console.log("结束拍卖")
             if (this.goods.status === "正进行" && this.goods.buy_user_id === 0) {
-                let goodsUpdate = {
-                    id: this.goods.id,
-                    buy_user_id: this.auctionsList[0].buy_user_id,
-                    max_prices: this.auctionsList[0].buy_user_prices,
-                    status: "已结束",
-                    deal_at: new Date().getTime()
+
+                let goodsUpdate
+
+                if(this.auctionsList[0]==null){
+                    goodsUpdate = {
+                        id: this.goods.id,
+                        status: "已结束",
+                        deal_at: new Date().getTime()
+                    }
+                }else {
+                    goodsUpdate = {
+                        id: this.goods.id,
+                        buy_user_id: this.auctionsList[0].buy_user_id,
+                        max_prices: this.auctionsList[0].buy_user_prices,
+                        status: "已结束",
+                        deal_at: new Date().getTime()
+                    }
                 }
+
                 axios.put("http://localhost:8081/goods/updateById", goodsUpdate)
                         .then(res => {
                             console.log(res.data)
                         })
+
+
+                if(this.auctionsList[0]==null){
+                    return
+                }
 
                 // 更新成功拍者的账户
                 let user = {
@@ -122,6 +151,7 @@ let goodsInfoApp = new Vue({
         },
 
         bidGoods() {
+            let that = this
             // 竞价操作,点击参与竞价时触发
             if (this.canbid === false) {
                 this.$message.error("该商品已经结束拍卖啦！");
@@ -131,17 +161,22 @@ let goodsInfoApp = new Vue({
                 this.$message.error("竞拍价格需要大于当前价格！");
                 return
             }
-            if (this.goods.sell_user_id == localStorage["nowLoginUserId"]) {//不规则判断
+            if (this.isMyGoods === true) {//
                 this.$message.error("不能竞拍自己的商品！");
                 return
             }
+            if(this.mybidprices >= this.goods.buyout_prices){//如果竞价的价格大于买断价格，那么就进入买断事件
+                this.buyoutTheGoods()
+                this.dialogVisible = false
+                return
+            }
+
             let myauctions = {
                 goods_id: this.goods.id,
                 sell_user_id: this.goods.sell_user_id,
                 buy_user_id: localStorage["nowLoginUserId"],
                 buy_user_prices: this.mybidprices
             }
-            let that = this
             //往竞拍记录表中添加信息
             axios.post("http://localhost:8081/auctions", myauctions)
                     .then(res => {
@@ -154,9 +189,7 @@ let goodsInfoApp = new Vue({
                             that.dialogVisible = false
                         }
                     })
-                    .catch(res => {
-                        console.log(res)
-                    })
+
             //修改当前商品的价格最大值
             let cg = {
                 id: this.goods.id,
@@ -165,15 +198,51 @@ let goodsInfoApp = new Vue({
             axios.put("http://localhost:8081/goods/updateById", cg)
                     .then(res => {
                         console.log(res.data)
+                        window.location.href="goodsInfo.html"
                     })
         },
 
         // 买断商品
         buyoutTheGoods() {
+            this.dialogVisible = false
+            // console.log("买断")
+            if (this.canbid === false) {
+                this.$message.error("该商品已经结束拍卖啦！");
+                return
+            }
+            if (this.mybidprices <= this.thisGoodsMaxPrices) {
+                this.$message.error("竞拍价格需要大于当前价格！");
+                return
+            }
+            if (this.isMyGoods === true) {//
+                this.$message.error("不能竞拍自己的商品！");
+                return
+            }
+
             this.mybidprices = this.goods.buyout_prices
 
             // 执行竞价操作
-            this.bidGoods()
+            // this.bidGoods()
+
+            let myauctionso = {
+                goods_id: this.goods.id,
+                sell_user_id: this.goods.sell_user_id,
+                buy_user_id: localStorage["nowLoginUserId"],
+                buy_user_prices: this.mybidprices
+            }
+            //往竞拍记录表中添加信息
+            axios.post("http://localhost:8081/auctions", myauctionso)
+                    .then(res => {
+                        console.log(res)
+                        if (res.data.status === "ok") {
+                            this.$message({message: "参与竞拍成功！", type: "success"})
+                            that.dialogVisible = false
+                        } else {
+                            this.$message.error("参与竞拍失败啦！")
+                            that.dialogVisible = false
+                        }
+                    })
+
 
             //更改商品的信息
             let g = {
@@ -196,7 +265,6 @@ let goodsInfoApp = new Vue({
                 goods_id: this.goods.id,
                 status: "已完成"
             }
-
             //更新记录表中拍卖记录的状态
             axios.put("http://localhost:8081/auctions", au)
                     .then(res => {
@@ -213,11 +281,13 @@ let goodsInfoApp = new Vue({
             axios.put("http://localhost:8081/users/updateMoney", u)
                     .then(res => {
                         console.log(res.data)
-                    })
-                    .catch(res => {
-                        console.log(res.data)
+                        window.location.href="goodsInfo.html"
                     })
             this.dialogVisibleBuyout = false
+        },
+        // 跳转到搜索页面
+        goToTheSearchPage(){
+            window.location.href="searchPage.html"
         }
     },
     mounted() {
@@ -225,7 +295,6 @@ let goodsInfoApp = new Vue({
         window.updateSocket = this.getTime
         this.setTheGoods()//页面一加载就执行该方法，设置好商品数据和竞拍记录
         c = setInterval(this.getTheCountDownTime, 1000)//一直更新倒计时
-
     },
     beforeDestroy() {
         clearInterval()
