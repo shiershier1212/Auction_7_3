@@ -17,10 +17,6 @@ let app = new Vue({
                     .catch(res=>{console.log(res.data)})
 
         },
-        funshow(s){
-            // return s==="正进行"
-            return "正进行"
-        },
         goToTheGoodsInfo(i){
             localStorage.nowGoodId = i
             window.location.href="goodsinfo.html"

@@ -185,6 +185,7 @@ let goodsInfoApp = new Vue({
             }
             axios.put("http://localhost:8081/goods/updateById", g)
                     .then(res => {
+                        console.log(res.data)
                     })
                     .catch(res => {
                         console.log(res, data)

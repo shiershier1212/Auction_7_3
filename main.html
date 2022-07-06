@@ -86,13 +86,11 @@
                     <li>宁夏</li>
                 </ul>
 
-                <img src="">
             </div>
             <div class="center">
                 <div class="block">
                     <el-carousel height="368px">
                         <el-carousel-item v-for="i in lunImage.length" :key="item">
-<!--                            <h3 class="small" style="height: 300px">{{ i }}</h3>-->
                             <img :src="lunImage[i-1]" alt="">
                         </el-carousel-item>
                     </el-carousel>

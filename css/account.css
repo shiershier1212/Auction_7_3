@@ -52,7 +52,7 @@ a:-webkit-any-link {
 .btn {
     width: 280px;
     height: 70px;
-    margin-bottom: 0px;
+    margin-bottom: 0;
 }
 
 .el-main {

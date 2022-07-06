@@ -76,7 +76,7 @@
 
                         <!--                        注册的商品-->
                         <ul>
-                            <li v-for="(item,index) in myGoodsList">
+                            <li v-for="item in myGoodsList">
                                 <div @click="goToTheGoodsInfo(item.id)">
                                     <img :src="item.image_url" alt="">
                                     <span class="gname">{{item.name}}</span>
@@ -96,7 +96,7 @@
                     <!--                    我拍到的商品-->
                     <div v-show="MyGoodsInfoIsShow" class="MyGoodsInfoIsShow accallgoods">
                         <ul>
-                            <li v-for="(item,index) in myOwnGoodsList">
+                            <li v-for="item in myOwnGoodsList">
                                 <div @click="goToTheGoodsInfo(item.id)">
                                     <img :src="item.image_url" alt="">
                                     <span class="gname">{{item.name}}</span>

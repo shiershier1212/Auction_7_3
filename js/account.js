@@ -184,6 +184,7 @@ let accountapp = new Vue({
                             console.log(res.data)
                         })
                         .catch(res => {
+                            console.log(res.data)
                         })
             }
         },
