@@ -33,7 +33,7 @@
                     <el-tag type="success" style="width: 80px;margin-bottom: 5px">
                         {{user.name}}
                     </el-tag>
-                    <el-tag type="success" style="width: 80px">￥{{user.money}}</el-tag>
+                    <el-tag type="success" style="width: 103px">￥{{user.money}}</el-tag>
 
                 </div>
                 <div class="someButton">
@@ -72,23 +72,18 @@
                     </div>
 
                     <!--                    我注册的商品界面-->
-                    <div v-show="MyGoodsInfoIsShow" class="MyGoodsInfoIsShow">
+                    <div v-show="MyGoodsInfoIsShow" class="MyGoodsInfoIsShow accallgoods">
 
                         <!--                        注册的商品-->
                         <ul>
                             <li v-for="(item,index) in myGoodsList">
-                                <div class="goodsview" @click="goToTheGoodsInfo(item.id)">
-                                    <div class="goodsImage">
-                                        <img :src="item.image_url" alt="" style="width: 288px;height: 286px">
-                                    </div>
-                                    <div style="background-color: #ffffff">
-                                        <p style="font-size: 18px;margin-bottom: 5px;margin-top: 5px">
-                                            {{item.name}}</p>
-                                        <p style="font-size: 25px;color: red">
-                                            <span style="font-size: 18px;color: red">￥</span>
-                                            {{item.min_prices}}
-                                        </p>
-                                    </div>
+                                <div @click="goToTheGoodsInfo(item.id)">
+                                    <img :src="item.image_url" alt="">
+                                    <span class="gname">{{item.name}}</span>
+                                    <h4 class="nowp">当前价 <span>￥{{item.max_prices}}</span></h4>
+                                    <span class="minp">起拍价 <span>￥{{item.min_prices}}</span></span>
+                                    <el-tag type="success" v-show="true">正进行</el-tag>
+                                    <el-tag type="danger" v-show="false">已结束</el-tag>
                                 </div>
                             </li>
                         </ul>
@@ -99,21 +94,16 @@
                         <span>我拍到的商品↓</span>
                     </div>
                     <!--                    我拍到的商品-->
-                    <div v-show="MyGoodsInfoIsShow" class="MyGoodsInfoIsShow">
+                    <div v-show="MyGoodsInfoIsShow" class="MyGoodsInfoIsShow accallgoods">
                         <ul>
                             <li v-for="(item,index) in myOwnGoodsList">
-                                <div class="goodsview">
-                                    <div class="goodsImage">
-                                        <img :src="item.image_url" alt="" style="width: 288px;height: 286px">
-                                    </div>
-                                    <div style="background-color: #ffffff">
-                                        <p style="font-size: 18px;margin-bottom: 5px;margin-top: 5px">
-                                            {{item.name}}</p>
-                                        <p style="font-size: 25px;color: red">
-                                            <span style="font-size: 18px;color: red">￥</span>
-                                            {{item.min_prices}}
-                                        </p>
-                                    </div>
+                                <div @click="goToTheGoodsInfo(item.id)">
+                                    <img :src="item.image_url" alt="">
+                                    <span class="gname">{{item.name}}</span>
+                                    <h4 class="nowp">当前价 <span>￥{{item.max_prices}}</span></h4>
+                                    <span class="minp">起拍价 <span>￥{{item.min_prices}}</span></span>
+                                    <el-tag type="success" v-show="true">正进行</el-tag>
+                                    <el-tag type="danger" v-show="false">已结束</el-tag>
                                 </div>
                             </li>
                         </ul>

@@ -1,4 +1,5 @@
 let thisGoodsId = localStorage["nowGoodId"]//当前页面的商品id
+// let thisGoodsId = 26//当前页面的商品id
 let c
 
 let goodsInfoApp = new Vue({
@@ -11,8 +12,9 @@ let goodsInfoApp = new Vue({
             s: 0,
         },
         dialogVisible: false,
+        dialogVisibleBuyout: false,
         mybidprices: 100,
-        user:null,
+        user: null,
         goods: null,
         thisGoodsMaxPrices: 0,
         auctionsList: [],
@@ -25,6 +27,7 @@ let goodsInfoApp = new Vue({
             axios.get("http://localhost:8081/goods/getbyid/" + thisGoodsId)
                     .then(res => {
                         if (res.data.status === "ok") {
+                            that.thisGoodsMaxPrices = res.data.data.max_prices
                             that.goods = res.data.data//设置商品信息
                             that.canbid = res.data.data.status === "正进行"//看是否可以拍卖
                         } else {
@@ -44,7 +47,7 @@ let goodsInfoApp = new Vue({
                             this.auctionsList.sort(function (a, b) {
                                 return b.buy_user_prices - a.buy_user_prices
                             })
-                            that.thisGoodsMaxPrices = this.auctionsList[0].buy_user_prices
+                            // that.thisGoodsMaxPrices = this.auctionsList[0].buy_user_prices
                         } else {
                             console.log(res.data.data)
                         }
@@ -76,42 +79,43 @@ let goodsInfoApp = new Vue({
         // 在打开页面时更新，结束拍卖
         endTheAuctions() {
             // console.log("结束拍卖")
-            if (this.goods.status === "正进行" && this.goods.buy_user_id === null) {
+            if (this.goods.status === "正进行" && this.goods.buy_user_id === 0) {
                 let goodsUpdate = {
                     id: this.goods.id,
                     buy_user_id: this.auctionsList[0].buy_user_id,
                     max_prices: this.auctionsList[0].buy_user_prices,
                     status: "已结束",
-                    deal_at:new Date().getTime()
+                    deal_at: new Date().getTime()
                 }
                 axios.put("http://localhost:8081/goods/updateById", goodsUpdate)
                         .then(res => {
                             console.log(res.data)
                         })
-                        .catch(res => {
-                        })
+
                 // 更新成功拍者的账户
-                let user={
-                    id:this.auctionsList[0].buy_user_id,
-                    money:this.auctionsList[0].buy_user_prices//这个钱其实是花费的钱
+                let user = {
+                    id: this.auctionsList[0].buy_user_id,
+                    money: this.auctionsList[0].buy_user_prices//这个钱其实是花费的钱
                 }
-                axios.put("http://localhost:8081/users/updateMoney",user)
-                        .then(res=>{
+                axios.put("http://localhost:8081/users/updateMoney", user)
+                        .then(res => {
                             console.log(res.data)
                         })
-                        .catch(res=>{
+                        .catch(res => {
                             console.log(res.data)
                         })
 
                 let au = {
-                    goods_id:this.goods.id,
+                    goods_id: this.goods.id,
                     status: "已完成"
                 }
-                axios.put("http://localhost:8081/auctions",au)
-                        .then(res=>{
+
+                //更新记录表中拍卖记录的状态
+                axios.put("http://localhost:8081/auctions", au)
+                        .then(res => {
                             console.log(res.data)
                         })
-                        .catch(res=>{
+                        .catch(res => {
                             console.log(res.data)
                         })
             }
@@ -127,7 +131,7 @@ let goodsInfoApp = new Vue({
                 this.$message.error("竞拍价格需要大于当前价格！");
                 return
             }
-            if(this.goods.sell_user_id == localStorage["nowLoginUserId"]){//不规则判断
+            if (this.goods.sell_user_id == localStorage["nowLoginUserId"]) {//不规则判断
                 this.$message.error("不能竞拍自己的商品！");
                 return
             }
@@ -138,6 +142,7 @@ let goodsInfoApp = new Vue({
                 buy_user_prices: this.mybidprices
             }
             let that = this
+            //往竞拍记录表中添加信息
             axios.post("http://localhost:8081/auctions", myauctions)
                     .then(res => {
                         console.log(res)
@@ -152,7 +157,67 @@ let goodsInfoApp = new Vue({
                     .catch(res => {
                         console.log(res)
                     })
+            //修改当前商品的价格最大值
+            let cg = {
+                id: this.goods.id,
+                max_prices: this.mybidprices
+            }
+            axios.put("http://localhost:8081/goods/updateById", cg)
+                    .then(res => {
+                        console.log(res.data)
+                    })
         },
+
+        // 买断商品
+        buyoutTheGoods() {
+            this.mybidprices = this.goods.buyout_prices
+
+            // 执行竞价操作
+            this.bidGoods()
+
+            //更改商品的信息
+            let g = {
+                id: this.goods.id,
+                buy_user_id: localStorage["nowLoginUserId"],
+                max_prices: this.mybidprices,
+                finished_at: new Date(),
+                status: "已结束"
+            }
+            axios.put("http://localhost:8081/goods/updateById", g)
+                    .then(res => {
+                    })
+                    .catch(res => {
+                        console.log(res, data)
+                        this.$message({message: "买断商品成功！", type: "success"})
+                    })
+
+            let au = {
+                goods_id: this.goods.id,
+                status: "已完成"
+            }
+
+            //更新记录表中拍卖记录的状态
+            axios.put("http://localhost:8081/auctions", au)
+                    .then(res => {
+                        console.log(res.data)
+                    })
+                    .catch(res => {
+                        console.log(res.data)
+                    })
+
+            let u = {
+                id:localStorage["nowLoginUserId"],
+                money:this.mybidprices
+            }
+            axios.put("http://localhost:8081/users/updateMoney", u)
+                    .then(res => {
+                        console.log(res.data)
+                    })
+                    .catch(res => {
+                        console.log(res.data)
+                    })
+            this.dialogVisibleBuyout = false
+        }
     },
     mounted() {
         window.updateSocket = this.setTheGoods

@@ -15,12 +15,11 @@ let goods = {
     sell_user_id: user.id,
     buy_user_id: null,
     min_prices: 1,
-    max_prices: null,
+    max_prices: 1,
     buyout_prices: 2,
     create_at: null,
     finished_at:"",
     status: null,
-    duration: "",
     image_url: null
 }
 
@@ -140,6 +139,7 @@ let accountapp = new Vue({
                 this.$message.error("买断价格不能低于起拍价格！");
                 return;
             }
+
             axios.post("http://localhost:8081/goods", this.goods)
                     .then(res => {
                         console.log(res)

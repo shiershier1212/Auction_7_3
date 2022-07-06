@@ -51,7 +51,7 @@ a:-webkit-any-link {
 .top{
     background-color: #ffffff;
     /*display: block;*/
-    height: 35%;
+    height: 40%;
     display: flex;
     border-color: #c8c8c8;
     border-style: solid;
@@ -121,7 +121,7 @@ a:-webkit-any-link {
 .bottom{
     border-color: #c8c8c8;
     border-style: solid;
-    margin-top: 60px;
+    margin-top: 20px;
 }
 
 
@@ -157,4 +157,85 @@ h1 .tt{
 
 .el-card__body, .el-main {
     padding: 0px;
+}
+
+
+
+/*关于search的*/
+
+.search {
+    display: flex;
+    background-color: #ffffff;
+    height: 177px;
+    flex-flow: column;
+}
+
+.search-top {
+    background-color: #f8f8f8;
+    height: 70%;
+    text-align: center;
+}
+.search-top span{
+    font-size: 78px;
+    font-family: 华文楷体;
+}
+
+.search-bottom {
+    background-color: #ffffff;
+    height: 30%;
+    margin-left: auto;
+    margin-right: auto;
+    width: 85%;
+}
+
+.search-bottom ul {
+    margin-left: 40px;
+}
+
+.search-bottom ul li {
+    float: left;
+    list-style: none;
+    width: 75px;
+    text-align: center;
+    margin-bottom: 0;
+    margin-right: 25px;
+}
+
+.search-bottom ul li a {
+    font-size: 17px;
+}
+
+.search-bottom ul li:hover {
+    border-radius: 10px;
+    background-color: #ff5353;
+}
+
+.search-bottom el-input {
+}
+
+.search-bottom .el-input {
+    display: inline;
+    margin-bottom: 3px;
+}
+
+.search-bottom .el-input__inner {
+    width: 21%;
+    display: inline;
+    height: 31px;
+    margin-left: 38px;
+}
+
+.gimin{
+    color: #808080;
+    font-size: 25px;
+}
+
+.gimj{
+    color: #7f7f7f;
+    font-size: 20px;
+}
+
+.spanbuyout{
+    margin-left: 50px;
+    font-size: 9px;
 }

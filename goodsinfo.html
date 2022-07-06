@@ -20,6 +20,26 @@
         <el-menu-item index="1" style="float: right"><a href="main.html" target="_blank">拍卖主页</a></el-menu-item>
     </el-menu>
 
+    <div class="search">
+        <div class="search-top"><span>竞拍网</span></div>
+        <div class="search-bottom">
+            <ul>
+                <li><a href="main.html">首页</a></li>
+                <li><a href="main.html">法院</a></li>
+                <li><a href="main.html">公告</a></li>
+                <li><a href="main.html">预告</a></li>
+                <li><a href="main.html">刑案</a></li>
+                <li><a href="main.html">自行处置</a></li>
+                <li><a href="main.html">破产</a></li>
+                <li><a href="main.html">捡漏</a></li>
+                <li><a href="main.html">精准获客</a></li>
+                <el-input placeholder="标的物名字/地点"></el-input>
+
+            </ul>
+        </div>
+    </div>
+
+
     <div class="info">
         <div class="top">
             <div class="left">
@@ -35,18 +55,25 @@
                 </h1>
                 <h1 class="prices">
                     <span class="span">当前价</span>
-                    <!--                    {{goods.max_prices}}-->
                     {{thisGoodsMaxPrices}}
-                    <span class="spanyuan">元</span></h1>
+<!--                    ￥ {{goods.max_prices}}-->
+                    <span class="spanyuan">元</span>
+                </h1>
+                <h1 class="prices">
+                    <span class="span">买断价</span>
+                    ￥ {{goods.buyout_prices}}
+                    <span class="spanyuan">元</span>
+                </h1>
                 <h1><span class="span">出价</span>
                     <el-input v-model="mybidprices" placeholder="请输入竞价"></el-input>
                 </h1>
-                <el-button type="danger" @click="dialogVisible = true">我要竞价</el-button>
-                <h1>
-                    <el-tag type="info" v-show="!canbid" style="font-size: 26px;margin-left: 53px">
+                <el-button type="danger" @click="dialogVisible = true" style="margin-bottom: 5px">我要竞价</el-button>
+                <el-button type="danger" @click="dialogVisibleBuyout = true" v-if="canbid">我要买断</el-button>
+                <h2>
+                    <el-tag type="info" v-show="!canbid" style="font-size: 26px;margin-left: 82px">
                         竞拍已经结束
                     </el-tag>
-                </h1>
+                </h2>
             </div>
         </div>
 
@@ -61,13 +88,25 @@
             </span>
         </el-dialog>
 
+        <el-dialog
+                title="确认信息"
+                :visible.sync="dialogVisibleBuyout"
+                width="30%">
+            <span>您确定买断该商品？？</span>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisibleBuyout = false">取 消</el-button>
+                <el-button type="primary" @click="buyoutTheGoods">确 定</el-button>
+            </span>
+        </el-dialog>
+
+
         <!--        <el-divider></el-divider>-->
         <div class="center">
             <el-row :gutter="12">
                 <el-col :span="8">
                     <el-card shadow="hover">
-                        <h4 style="margin-left: 20px">商品起拍价: {{goods.min_prices}} 元</h4>
-                        <h4 style="margin-left: 20px">最低加价：1 元</h4>
+                        <h4 style="margin-left: 20px">商品起拍价: <span class="gimin">￥{{goods.min_prices}} </span></h4>
+                        <h4 style="margin-left: 20px">最低加价：<span class="gimj">￥1 </span></h4>
                         <h4 style="margin-left: 20px;margin-bottom: 20px">商品简介：{{goods.description}}</h4>
                     </el-card>
                 </el-col>
