@@ -4,6 +4,7 @@ let app = new Vue({
         lunImage:["img/lun/lun1.png","img/lun/lun2.png","img/lun/lun3.png","img/lun/lun4.png"],
         allGoodsList:[],
         sear:"",
+        activeIndex:'1',
     },
     methods: {
         // 获取所有的商品信息进行渲染

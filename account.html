@@ -14,23 +14,25 @@
 <body>
 <div id="accountapp">
     <el-container>
-        <el-header>
+        <el-header style="position: fixed;width: 100%">
             <!--            头部-->
-            <el-menu class="el-menu-demo" mode="horizontal">
-                <el-menu-item index="4" style="float: right"><a href="account.html" target="_blank">个人页面</a>
+            <el-menu class="el-menu-demo" mode="horizontal" :default-active="activeIndex">
+                <el-menu-item index="4" style="float: right"><a href="account.html" target="_blank"><i
+                        class="el-icon-user"></i>个人页面</a></el-menu-item>
+                <el-menu-item index="3" style="float: right"><i class="el-icon-shopping-cart-full"></i>我的收藏
                 </el-menu-item>
-                <el-menu-item index="3" style="float: right">我的收藏</el-menu-item>
-                <el-menu-item index="2" style="float: right">我的消息</el-menu-item>
-                <el-menu-item index="1" style="float: right"><a href="main.html" target="_blank">拍卖主页</a></el-menu-item>
+                <el-menu-item index="2" style="float: right"><i class="el-icon-chat-square"></i>我的消息</el-menu-item>
+                <el-menu-item index="1" style="float: right"><a href="main.html" target="_blank"><i
+                        class="el-icon-sunset"></i>拍卖主页</a></el-menu-item>
             </el-menu>
         </el-header>
 
         <!--        头部以下-->
-        <el-container>
+        <el-container style="margin-top: 60px">
             <el-aside width="400px">
                 <div class="userImage">
-                    <img class="userimg" src="./img/img-01.png" alt="">
-                    <el-tag type="success" style="width: 80px;margin-bottom: 5px">
+                    <img class="userimg" src="img/touxiang.jpg" alt="">
+                    <el-tag type="success" style="width: 80px;margin-bottom: 5px;margin-top: 5px">
                         {{user.name}}
                     </el-tag>
                     <el-tag type="success" style="width: 103px">￥{{user.money}}</el-tag>
@@ -52,24 +54,28 @@
                         <el-card class="box-card">
                             <div slot="header" class="card-clearfix">
                                 <span style="float: left">个人信息</span>
-                                <el-button style="float: right; padding: 3px 0" type="text" onclick="setUserInfo()">
-                                    更新信息
+                                <el-button style="float: right; padding: 3px 0" type="text" @click="chooseDialogVisible = true">
+                                    修改个人信息
                                 </el-button>
                             </div>
-                            <div class="card-text card-item">
-                                <el-tag type="info">ID：{{user.id}}</el-tag>
-                            </div>
-                            <div class="card-text card-item">
-                                <el-tag type="info">电话号码：{{user.phone_number}}</el-tag>
-                            </div>
-                            <div class="card-text card-item">
-                                <el-tag type="info">昵称：{{user.name}}</el-tag>
-                            </div>
-                            <div class="card-text card-item">
-                                <el-tag type="info">账户余额：{{user.money}}</el-tag>
-                            </div>
+                            <div class="card-text card-item"><el-tag type="info">ID：{{user.id}}</el-tag></div>
+                            <div class="card-text card-item"><el-tag type="info">电话号码：{{user.phone_number}}</el-tag></div>
+                            <div class="card-text card-item"><el-tag type="info">昵称：{{user.name}}</el-tag></div>
+                            <div class="card-text card-item"><el-tag type="info">账户余额：{{user.money}}</el-tag></div>
                         </el-card>
                     </div>
+
+                    <!--                    //修改个人信息弹出框-->
+                    <el-dialog title="请选择操作" :visible.sync="chooseDialogVisible" width="30%">
+                        <span>
+                            <el-button type="text" @click="changeName" style="margin-right: 30px">修改昵称</el-button>
+                            <el-button type="text" @click="changePassword">修改密码</el-button>
+                        </span>
+                        <span slot="footer" class="dialog-footer">
+                            <el-button @click="chooseDialogVisible = false">取 消</el-button>
+                        </span>
+                    </el-dialog>
+
 
                     <!--                    我注册的商品界面-->
                     <div v-show="MyGoodsInfoIsShow" class="MyGoodsInfoIsShow accallgoods">
@@ -117,98 +123,37 @@
                                 size="medium">商品注册
                         </el-tag>
                         <el-form :model="goods" ref="goodsForm" label-width="150px">
-                            <el-form-item label="商品名称：">
-                                <el-input v-model="goods.name" style="width: 300px;float: left"></el-input>
-                            </el-form-item>
-
-                            <el-form-item label="商品描述：">
-                                <el-input v-model="goods.description" style="width: 540px;float: left"></el-input>
-                            </el-form-item>
-
-                            <el-form-item label="售卖者名字：">
-                                <el-input v-model="user.name" style="width: 100px;float: left"></el-input>
-                            </el-form-item>
-
-                            <el-form-item label="商品起拍价格：">
-                                <el-input v-model="goods.min_prices" style="width: 100px;float: left"></el-input>
-                                <label style="float: left">元</label>
-                            </el-form-item>
-
-                            <el-form-item label="商品买断价格：">
-                                <el-input v-model="goods.buyout_prices" style="width: 100px;float: left"></el-input>
-                                <label style="float: left">元</label>
-                            </el-form-item>
-
+                            <el-form-item label="商品名称："><el-input v-model="goods.name" style="width: 300px;float: left"></el-input></el-form-item>
+                            <el-form-item label="商品描述："><el-input v-model="goods.description" style="width: 540px;float: left"></el-input></el-form-item>
+                            <el-form-item label="售卖者名字："><el-input v-model="user.name" style="width: 100px;float: left"></el-input></el-form-item>
+                            <el-form-item label="商品起拍价格："><el-input v-model="goods.min_prices" style="width: 100px;float: left"></el-input><label style="float: left">元</label></el-form-item>
+                            <el-form-item label="商品买断价格："><el-input v-model="goods.buyout_prices" style="width: 100px;float: left"></el-input><label style="float: left">元</label></el-form-item>
                             <el-form-item label="商品拍卖结束时间：">
                                 <div class="block" style="float: left">
-                                    <el-date-picker
-                                            v-model="goods.finished_at"
-                                            type="datetime"
-                                            placeholder="选择日期时间">
+                                    <el-date-picker v-model="goods.finished_at" type="datetime" placeholder="选择日期时间">
                                     </el-date-picker>
                                 </div>
                             </el-form-item>
-
-                            <el-form-item label="商品图片链接：">
-                                <el-input v-model="goods.image_url" style="width: 540px;float: left"></el-input>
-                            </el-form-item>
-
-                            <el-form-item>
-                                <el-button :plain="true" type="primary" @click="submitForm">立即注册</el-button>
-                                <el-button @click="resetForm">重置</el-button>
-                            </el-form-item>
+                            <el-form-item label="商品图片链接："><el-input v-model="goods.image_url" style="width: 540px;float: left"></el-input></el-form-item>
+                            <el-form-item><el-button :plain="true" type="primary" @click="submitForm">立即注册</el-button><el-button @click="resetForm">重置</el-button></el-form-item>
                         </el-form>
                     </div>
 
                     <!--                    拍卖管理-->
                     <div v-show="myGoodsControl">
-                        <p>我创建的拍卖记录</p>
+                        <p>我创建的拍卖</p>
                         <template>
-                            <el-table
-                                    :data="myGoodsList"
-                                    stripe
-                                    style="width: 100%" class="goodsTable">
-                                <el-table-column
-                                        prop="name"
-                                        label="名字"
-                                        width="80">
-                                </el-table-column>
-                                <el-table-column
-                                        prop="min_prices"
-                                        label="起拍价格"
-                                        width="90">
-                                </el-table-column>
-                                <el-table-column
-                                        prop="buyout_prices"
-                                        label="买断价格"
-                                        width="90">
-                                </el-table-column>
-                                <el-table-column
-                                        prop="max_prices"
-                                        label="当前价格"
-                                        width="100">
-                                </el-table-column>
-                                <el-table-column
-                                        prop="finished_at"
-                                        label="结束时间"
-                                        width="160">
-                                </el-table-column>
-                                <el-table-column
-                                        prop="status"
-                                        label="状态"
-                                        width="80">
-                                </el-table-column>
+                            <el-table :data="myGoodsList" stripe style="width: 100%" class="goodsTable">
+                                <el-table-column prop="name" label="名字" width="80"></el-table-column>
+                                <el-table-column prop="min_prices" label="起拍价格" width="90"></el-table-column>
+                                <el-table-column prop="buyout_prices" label="买断价格" width="90"></el-table-column>
+                                <el-table-column prop="max_prices" label="当前价格" width="100"></el-table-column>
+                                <el-table-column prop="finished_at" label="结束时间" width="160"></el-table-column>
+                                <el-table-column prop="status" label="状态" width="80"></el-table-column>
                                 <el-table-column label="操作" width="180">
                                     <template slot-scope="scope">
-                                        <el-button
-                                                size="mini"
-                                                @click="endTheAuction(scope.$index, scope.row)">结束拍卖
-                                        </el-button>
-                                        <el-button
-                                                size="mini"
-                                                type="success"
-                                                @click="goToTheGoodsInfo2(scope.$index, scope.row)">详情
-                                        </el-button>
+                                        <el-button size="mini" @click="endTheAuction(scope.$index, scope.row)">结束拍卖</el-button>
+                                        <el-button size="mini" type="success" @click="goToTheGoodsInfo2(scope.$index, scope.row)">详情</el-button>
                                     </template>
                                 </el-table-column>
                             </el-table>
@@ -216,37 +161,17 @@
                     </div>
 
                     <!--                    我参与的拍卖-->
-                    <div v-show="myGoodsControl">
-                        <p>我参与的拍卖记录</p>
+                    <div v-show="myGoodsControl" style="margin-top: 40px">
+                        <p>我参与的拍卖</p>
                         <template>
-                            <el-table
-                                    :data="myAuctionsObj"
-                                    stripe
-                                    style="width: 100%" class="goodsTable">
-                                <el-table-column
-                                        prop="goods_id"
-                                        label="商品代号"
-                                        width="170" style="margin-left: 40px">
-                                </el-table-column>
-                                <el-table-column
-                                        prop="buy_user_prices"
-                                        label="我的竞价"
-                                        width="170">
-                                </el-table-column>
-                                <el-table-column
-                                        prop="status"
-                                        label="状态"
-                                        width="170">
-                                </el-table-column>
-                                <el-table-column label="操作" width="180">
+                            <el-table :data="myAuctionsObj" stripe style="width: 100%" class="goodsTable">
+                                <el-table-column prop="goods_id" label="商品代号" width="200" style="margin-left: 40px"></el-table-column>
+                                <el-table-column prop="buy_user_prices" label="我的竞价" width="190"></el-table-column>
+                                <el-table-column prop="status" label="状态" width="190"></el-table-column>
+                                <el-table-column label="操作" width="200">
                                     <template slot-scope="scope">
-                                        <el-button size="mini" @click="cancelMyAuction(scope.$index, scope.row)">
-                                            取消竞拍
-                                        </el-button>
-                                        <el-button size="mini" type="success"
-                                                   @click="GoTOGoodsInfo(scope.$index, scope.row)">
-                                            详情
-                                        </el-button>
+                                        <el-button size="mini" @click="cancelMyAuction(scope.$index, scope.row)">取消竞拍</el-button>
+                                        <el-button size="mini" type="success" @click="GoTOGoodsInfo(scope.$index, scope.row)">详情</el-button>
                                     </template>
                                 </el-table-column>
                             </el-table>
@@ -255,17 +180,12 @@
 
 
                     <!--                    退出登录框弹出-->
-                    <el-dialog
-                            title="提示"
-                            :visible.sync="dialogVisible"
-                            width="30%"
-                            class="outdialog">
+                    <el-dialog title="提示" :visible.sync="dialogVisible" width="30%" class="outdialog">
                         <span>您确定退出吗？</span>
                         <span slot="footer" class="dialog-footer">
                         <el-button @click="dialogVisible=false">取 消</el-button>
                         <el-button type="primary" @click="outLogin">确 定</el-button></span>
                     </el-dialog>
-
                 </el-main>
             </el-container>
         </el-container>

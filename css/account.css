@@ -37,6 +37,7 @@ a:-webkit-any-link {
 .userimg {
     width: 170px;
     height: 170px;
+    border-radius: 84px;
 }
 
 .someButton {
@@ -142,6 +143,8 @@ body > .el-container {
 .box-card {
     width: 480px;
     line-height: 40px;
+    margin-left: auto;
+    margin-right: auto;
 }
 .box-card .card-item{
     text-align: left;
@@ -215,4 +218,9 @@ body > .el-container {
     height: 20px;
     line-height: 15px;
     float: right;
+}
+
+.el-card.is-always-shadow{
+    margin-left: auto;
+    margin-right: auto;
 }

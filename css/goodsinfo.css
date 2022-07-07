@@ -239,3 +239,15 @@ h1 .tt{
     margin-left: 50px;
     font-size: 9px;
 }
+
+.el-table .warning-row {
+    /*background: #c7c7c7;*/
+    color: #d9d9d9;
+}
+.el-table .success-row {
+    /*background: #67C23A;*/
+    color: #000000;
+}
+.si .el-input__inner {
+    border: 2px solid black;
+}

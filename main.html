@@ -12,12 +12,12 @@
 <body>
 <div id="mainGoods">
 
-    <div class="top">
-        <el-menu class="el-menu-demo" mode="horizontal">
-            <el-menu-item index="4" style="float: right"><a href="account.html" target="_blank">个人页面</a></el-menu-item>
-            <el-menu-item index="3" style="float: right">我的收藏</el-menu-item>
-            <el-menu-item index="2" style="float: right">我的消息</el-menu-item>
-            <el-menu-item index="1" style="float: right"><a href="main.html" target="_blank">拍卖主页</a></el-menu-item>
+    <div class="top" >
+        <el-menu class="el-menu-demo" mode="horizontal" :default-active="activeIndex">
+            <el-menu-item index="4" style="float: right"><a href="account.html" target="_blank"><i class="el-icon-user"></i>个人页面</a></el-menu-item>
+            <el-menu-item index="3" style="float: right"><i class="el-icon-shopping-cart-full"></i>我的收藏</el-menu-item>
+            <el-menu-item index="2" style="float: right"><i class="el-icon-chat-square"></i>我的消息</el-menu-item>
+            <el-menu-item index="1" style="float: right"><a href="main.html" target="_blank"><i class="el-icon-sunset"></i>拍卖主页</a></el-menu-item>
         </el-menu>
     </div>
 
@@ -34,7 +34,7 @@
                 <li><a href="main.html">破产</a></li>
                 <li><a href="main.html">捡漏</a></li>
                 <li><a href="main.html">精准获客</a></li>
-                <el-input placeholder="标的物名字/地点" v-model="sear" v-on:click.native="goToTheSearchPage"></el-input>
+                <el-input placeholder="搜索/标的物名字/地点" v-model="sear" v-on:click.native="goToTheSearchPage" ></el-input>
 
             </ul>
         </div>
@@ -43,7 +43,7 @@
     <div class="main">
         <div class="main-top">
             <div class="left">
-                <h3>标的物类型</h3>
+                <h3><i class="el-icon-s-flag"></i> 标的物类型</h3>
                 <ul>
                     <li>机动车</li>
                     <li>住宅用房</li>
@@ -54,7 +54,7 @@
                     <li>工程</li>
                     <li>其他</li>
                 </ul>
-                <h3>标的物所在地</h3>
+                <h3><i class="el-icon-office-building"></i> 标的物所在地</h3>
                 <ul>
                     <li>浙江</li>
                     <li>江苏</li>

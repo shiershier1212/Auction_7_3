@@ -13,11 +13,10 @@
 <div id="goodsInfoApp">
     <!--            头部-->
     <el-menu class="el-menu-demo" mode="horizontal">
-        <el-menu-item index="4" style="float: right"><a href="account.html" target="_blank">个人页面</a>
-        </el-menu-item>
-        <el-menu-item index="3" style="float: right">我的收藏</el-menu-item>
-        <el-menu-item index="2" style="float: right">我的消息</el-menu-item>
-        <el-menu-item index="1" style="float: right"><a href="main.html" target="_blank">拍卖主页</a></el-menu-item>
+        <el-menu-item index="4" style="float: right"><a href="account.html" target="_blank"><i class="el-icon-user"></i>个人页面</a></el-menu-item>
+        <el-menu-item index="3" style="float: right"><i class="el-icon-shopping-cart-full"></i>我的收藏</el-menu-item>
+        <el-menu-item index="2" style="float: right"><i class="el-icon-chat-square"></i>我的消息</el-menu-item>
+        <el-menu-item index="1" style="float: right"><a href="main.html" target="_blank"><i class="el-icon-sunset"></i>拍卖主页</a></el-menu-item>
     </el-menu>
 
     <div class="search">
@@ -33,7 +32,7 @@
                 <li><a href="main.html">破产</a></li>
                 <li><a href="main.html">捡漏</a></li>
                 <li><a href="main.html">精准获客</a></li>
-                <el-input placeholder="标的物名字/地点" v-model="search" v-on:click.native="goToTheSearchPage" ></el-input>
+                <el-input placeholder="标的物名字/地点" v-model="search" v-on:click.native="goToTheSearchPage" class="si"></el-input>
 
             </ul>
         </div>
@@ -117,9 +116,8 @@
         </div>
         <div class="bottom">
             <el-table
-                    ref="singleTable"
                     :data="auctionsList"
-                    highlight-current-row
+                    :row-class-name="tableRowClassName"
                     style="width: 100%">
                 <el-table-column
                         type="index"
@@ -136,9 +134,7 @@
                         label="竞价"
                         width="200">
                 </el-table-column>
-
             </el-table>
-
         </div>
         <el-empty :image-size="200"></el-empty>
     </div>

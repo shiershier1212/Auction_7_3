@@ -4,7 +4,7 @@ let app = new Vue({
         userList: [],
         loginpn: "",
         loginps: "",
-        user: {
+        admin: {
             name: "",
             phone_number: "",
             password: "",

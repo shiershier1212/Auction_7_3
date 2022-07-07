@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <title>后台管理界面</title>
+    <link rel="stylesheet" href="css/admincon.css">
+
+</head>
+<body>
+<div id="adminController">
+    <el-container style="height: 730px; border: 1px solid #eee;width: 85%;margin-left: auto;margin-right: auto;">
+        <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
+            <el-menu>
+                <el-submenu index="1">
+                    <span slot="title" @click="setTheShow(1)"><i class="el-icon-message"></i>用户管理</span>
+                </el-submenu>
+                <el-submenu index="2">
+                    <span slot="title" @click="setTheShow(2)"><i class="el-icon-menu"></i>商品管理</span>
+                </el-submenu>
+                <el-submenu index="3">
+                    <span slot="title" @click="setTheShow(3)"><i class="el-icon-setting"></i>拍卖管理</span>
+                </el-submenu>
+            </el-menu>
+        </el-aside>
+
+        <el-container>
+            <el-header style="text-align: right; font-size: 12px">
+                <el-dropdown>
+                    <i class="el-icon-setting" style="margin-right: 15px"></i>
+                    <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item>查看</el-dropdown-item>
+                        <el-dropdown-item>新增</el-dropdown-item>
+                        <el-dropdown-item>删除</el-dropdown-item>
+                    </el-dropdown-menu>
+                </el-dropdown>
+            </el-header>
+
+            <el-main>
+                <el-table :data="userDataList" v-show="users">
+                    <el-table-column prop="id" label="编号" width="120"></el-table-column>
+                    <el-table-column prop="phone_number" label="电话号码" width="120"></el-table-column>
+                    <el-table-column prop="password" label="密码" width="120"></el-table-column>
+                    <el-table-column prop="name" label="姓名" width="120"></el-table-column>
+                    <el-table-column prop="money" label="余额" width="120"></el-table-column>
+                    <el-table-column
+                            label="操作"
+                            width="100">
+                        <template slot-scope="scope">
+                            <el-button @click="editUser(scope.row)" type="text" size="small">编辑</el-button>
+                            <el-button @click="userDelete(scope.row)" type="text" size="small">移除</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+
+                <el-table :data="goodsDataList" v-show="goodss" height="590">
+                    <el-table-column prop="id" label="编号" width="120"></el-table-column>
+                    <el-table-column prop="name" label="名字" width="120"></el-table-column>
+                    <el-table-column prop="description" label="描述" width="200"></el-table-column>
+                    <el-table-column prop="sell_user_id" label="售卖者id" width="120"></el-table-column>
+                    <el-table-column prop="buy_user_id" label="竞拍者id" width="120"></el-table-column>
+                    <el-table-column prop="min_prices" label="起拍价" width="120"></el-table-column>
+                    <el-table-column prop="max_prices" label="当前价" width="120"></el-table-column>
+                    <el-table-column prop="buyout_prices" label="买断价" width="120"></el-table-column>
+                    <el-table-column prop="finished_at" label="结束时刻" width="200"></el-table-column>
+                    <el-table-column prop="status" label="状态" width="120"></el-table-column>
+                    <el-table-column prop="image_url" label="图片路径" width="150"></el-table-column>
+                    <el-table-column
+                            fixed="right"
+                            label="操作"
+                            width="100">
+                        <template slot-scope="scope">
+                            <el-button @click="editGoods(scope.row)" type="text" size="small">编辑</el-button>
+                            <el-button @click="goodsDelete(scope.row)" type="text" size="small">移除</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+
+                <el-table :data="auctionsDataList" v-show="auctionss">
+                    <el-table-column prop="id" label="id" width="120"></el-table-column>
+                    <el-table-column prop="goods_id" label="物品id" width="120"></el-table-column>
+                    <el-table-column prop="sell_user_id" label="售卖者id" width="120"></el-table-column>
+                    <el-table-column prop="buy_user_id" label="竞价者id" width="120"></el-table-column>
+                    <el-table-column prop="buy_user_prices" label="竞价金额" width="120"></el-table-column>
+                    <el-table-column prop="status" label="状态" width="120"></el-table-column>
+                    <el-table-column
+                            label="操作"
+                            width="100">
+                        <template slot-scope="scope">
+                            <el-button @click="editAuctions(scope.row)" type="text" size="small">编辑</el-button>
+                            <el-button @click="auctionsDelete(scope.row)" type="text" size="small">移除</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </el-main>
+        </el-container>
+    </el-container>
+
+    <el-dialog
+            title="编辑用户信息"
+            :visible.sync="updateUserDialogVisible"
+            width="30%">
+        <span>
+            <el-form label-width="80px" :model="user">
+                <el-form-item label="id"><el-input v-model="user.id"></el-input></el-form-item>
+                <el-form-item label="电话号码"><el-input v-model="user.phone_number"></el-input></el-form-item>
+                <el-form-item label="密码"><el-input v-model="user.password"></el-input></el-form-item>
+                <el-form-item label="昵称"><el-input v-model="user.name"></el-input></el-form-item>
+                <el-form-item label="余额"><el-input v-model="user.money"></el-input></el-form-item>
+            </el-form>
+        </span>
+        <span slot="footer" class="dialog-footer">
+        <el-button @click="updateUserDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="updateUser">确 定</el-button>
+         </span>
+    </el-dialog>
+
+    <el-dialog
+            title="编辑商品信息"
+            :visible.sync="updateGoodsDialogVisible"
+            width="30%">
+        <span>
+            <el-form label-width="80px" :model="goods">
+                <el-form-item label="id"><el-input v-model="goods.id"></el-input></el-form-item>
+                <el-form-item label="名字"><el-input v-model="goods.name"></el-input></el-form-item>
+                <el-form-item label="描述"><el-input v-model="goods.description"></el-input></el-form-item>
+                <el-form-item label="售卖者id"><el-input v-model="goods.sell_user_id"></el-input></el-form-item>
+                <el-form-item label="竞拍者id"><el-input v-model="goods.buy_user_id"></el-input></el-form-item>
+                <el-form-item label="起拍价"><el-input v-model="goods.min_prices"></el-input></el-form-item>
+                <el-form-item label="当前价"><el-input v-model="goods.max_prices"></el-input></el-form-item>
+                <el-form-item label="买断价"><el-input v-model="goods.buyout_prices"></el-input></el-form-item>
+                <el-form-item label="结束时刻"><el-input v-model="goods.finished_at"></el-input></el-form-item>
+                <el-form-item label="状态"><el-input v-model="goods.status"></el-input></el-form-item>
+                <el-form-item label="图片路径"><el-input v-model="goods.image_url"></el-input></el-form-item>
+
+            </el-form>
+        </span>
+        <span slot="footer" class="dialog-footer">
+            <el-button @click="updateGoodsDialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="updateGoods">确 定</el-button>
+        </span>
+    </el-dialog>
+
+    <el-dialog
+            title="编辑竞拍信息"
+            :visible.sync="updateAuctionsDialogVisible"
+            width="30%">
+        <span>
+            <el-form label-width="80px" :model="auctions">
+                <el-form-item label="id"><el-input v-model="auctions.id"></el-input></el-form-item>
+                <el-form-item label="商品id"><el-input v-model="auctions.goods_id"></el-input></el-form-item>
+                <el-form-item label="售卖者id"><el-input v-model="auctions.sell_user_id"></el-input></el-form-item>
+                <el-form-item label="竞价者id"><el-input v-model="auctions.buy_user_id"></el-input></el-form-item>
+                <el-form-item label="竞价者id"><el-input v-model="auctions.buy_user_id"></el-input></el-form-item>
+                <el-form-item label="状态"><el-input v-model="auctions.status"></el-input></el-form-item>
+            </el-form>
+        </span>
+        <span slot="footer" class="dialog-footer">
+        <el-button @click="updateAuctionsDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="updateAuctions">确 定</el-button>
+         </span>
+    </el-dialog>
+
+</div>
+<script src="js/adminController.js"></script>
+</body>
+</html>

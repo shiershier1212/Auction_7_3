@@ -25,6 +25,7 @@ let goodsInfoApp = new Vue({
         canbid: true,
         search:"",
         isMyGoods:false,
+
     },
     methods: {
         setTheGoods() {
@@ -288,6 +289,14 @@ let goodsInfoApp = new Vue({
         // 跳转到搜索页面
         goToTheSearchPage(){
             window.location.href="searchPage.html"
+        },
+        //设置竞价表中胜出者颜色
+        tableRowClassName({row,rowIndex}){
+            if(rowIndex === 0){
+                return 'success-row'
+            }else {
+                return 'warning-row'
+            }
         }
     },
     mounted() {

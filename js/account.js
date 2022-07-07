@@ -43,7 +43,7 @@ let accountapp = new Vue({
     data: {
         user: user,
         goods: goods,
-
+        activeIndex:'4',
         myGoodsList: [],//我注册的商品
         myOwnGoodsList: [],//我拍卖到的商品
         myAuctionsObj: [],//我参与的拍卖
@@ -53,8 +53,7 @@ let accountapp = new Vue({
         MyGoodsInfoIsShow: false,
         GoodsReInfoIsShow: false,
         myGoodsControl: false,
-        // show:[{userInfoIsShow: false},{MyGoodsInfoIsShow: false},{GoodsReInfoIsShow: false},{myGoodsControl:false}],
-        // show:[false, false,false,false,false],
+        chooseDialogVisible:false,
     },
     methods: {
         setUserInfo,
@@ -191,26 +190,7 @@ let accountapp = new Vue({
             localStorage.nowGoodId = row.id
             window.location.href = "goodsinfo.html"
         },
-        // deleteThisGoodsInfo(index, row) {
-        //     //删除该商品的记录
-        //     if (row.status === "已结束") {
-        //         axios.delete("http://localhost:8081/goods/" + row.id)
-        //                 .then(res => {
-        //                     if (res.data.status === "ok") {
-        //                         this.$message({message: "删除成功！", type: "success"})
-        //                     } else {
-        //                         console.log(res)
-        //                         this.$message.error("删除失败！")
-        //                     }
-        //                 })
-        //                 .catch(res => {
-        //                     console.log(res)
-        //                     this.$message.error("删除失败！")
-        //                 })
-        //     } else if (row.status === "正进行") {
-        //         this.$message.error("商品还未结束拍卖！")
-        //     }
-        // },
+
         //表格的
         GoTOGoodsInfo(index, row) {
             localStorage.nowGoodId = row.goods_id
@@ -236,6 +216,51 @@ let accountapp = new Vue({
                         })
             }
         },
+        //修改个人信息
+        changeName(){
+            this.$prompt('请输入新昵称','提示',{
+                confirmButtonText:'确定',
+                cancelButtonText:'取消',
+            }).then(({value})=>{
+                let that = this
+                let u = {
+                    id:user.id,
+                    name:value
+                }
+                //发送修改名字的请求
+                axios.put("http://localhost:8081/users/updateUserInfo",u)
+                        .then(res=>{
+                            if(res.data.status==='ok'){
+                                this.$message({message:'修改昵称成功!',type:'success'})
+                                that.chooseDialogVisible = false
+                            }else {
+                                this.$message.error("修改失败！")
+                            }
+                        })
+            })
+        },
+        changePassword(){
+            this.$prompt('请输入新密码','提示',{
+                confirmButtonText:'确定',
+                cancelButtonText:'取消',
+            }).then(({value})=>{
+                let that = this
+                let u = {
+                    id:user.id,
+                    password:value
+                }
+                //发送修改名字的请求
+                axios.put("http://localhost:8081/users/updateUserInfo",u)
+                        .then(res=>{
+                            if(res.data.status==='ok'){
+                                this.$message({message:'修改密码成功!',type:'success'})
+                                that.chooseDialogVisible = false
+                            }else {
+                                this.$message.error("修改失败！")
+                            }
+                        })
+            })
+        }
     },
 
     mounted() {

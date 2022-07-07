@@ -20,6 +20,7 @@ li {
     background-color: #ffffff;
     height: 177px;
     flex-flow: column;
+    /*margin-top: 60px;*/
 }
 
 .search-top {
@@ -244,5 +245,7 @@ ul li {
     float: right;
 }
 
-
+.el-input__inner {
+    border: 2px solid black;
+}
 
