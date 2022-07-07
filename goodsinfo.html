@@ -70,7 +70,7 @@
                     我的商品
                 </el-tag>
                 <h2>
-                    <el-tag type="info" v-show="!canbid" style="font-size: 26px;margin-left: 82px">
+                    <el-tag type="info" v-show="!canbid" style="font-size: 26px;margin-left: 82px;font-family: hua">
                         竞拍已经结束
                     </el-tag>
                 </h2>
@@ -133,7 +133,9 @@
                 </el-table-column>
             </el-table>
         </div>
-        <el-empty :image-size="200"></el-empty>
+<!--        <el-empty :image-size="200"></el-empty>-->
+        <el-empty description="这里还没有数据哦"></el-empty>
+
     </div>
 </div>
 <script src="js/goodsInfo.js"></script>

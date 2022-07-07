@@ -24,7 +24,7 @@
 
     <div class="search search_s" style="background-color: rgba(241,241,241,0.85);text-align: center">
         <div>
-            <el-input placeholder="请输入内容" style="width: 454px;" v-model="wantToSearch"></el-input>
+            <el-input placeholder="请输入内容" style="width: 454px;" v-model="wantToSearch" @keyup.enter.native="searchGoods"></el-input>
             <el-button type="primary" icon="el-icon-search" @click="searchGoods">搜索</el-button>
         </div>
     </div>

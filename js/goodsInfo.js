@@ -120,7 +120,7 @@ let goodsInfoApp = new Vue({
 
                 let au = {
                     goods_id: this.goods.id,
-                    status: "已完成"
+                    status: "已结束"
                 }
 
                 //更新记录表中拍卖记录的状态

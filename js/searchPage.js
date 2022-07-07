@@ -5,6 +5,9 @@ let app = new Vue({
         searchGoodsList: [],
     },
     methods: {
+        test(){
+            console.log(123123123123123)
+        },
         searchGoods() {
             let that = this
             axios.get("http://localhost:8081/goods/getByName/" + this.wantToSearch)
