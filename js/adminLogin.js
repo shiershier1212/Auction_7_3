@@ -40,7 +40,6 @@ let adminloginApp = new Vue({
                         this.$message.error("请求失败！")
                     })
         },
-
     }
 })
 

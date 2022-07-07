@@ -28,7 +28,4 @@ let app = new Vue({
     mounted(){
         this.getTheAllGoodsInfo()//一开始便执行
     },
-    beforeDestroy(){
-
-    }
 })

@@ -1,12 +1,3 @@
-//页面加载时。执行方法
-window.onload = setUserInfo
-
-let user = {
-    id: localStorage["nowLoginUserId"],
-    name: "用户名字",
-    phone_number: localStorage["nowLoginUserPhoneNumber"],
-    money: "10000",
-}
 
 let goods = {
     id: null,
@@ -23,31 +14,16 @@ let goods = {
     image_url: "img/goodsImg/g (24).jpg",
 }
 
-//初始化用户信息的方法
-function setUserInfo() {
-    axios.get("http://localhost:8081/users/" + localStorage["nowLoginUserPhoneNumber"])
-            .then(res => {
-                console.log(res)
-                user.name = res.data.data.name
-                user.money = res.data.data.money
-                user.id = res.data.data.id
-                goods.sell_user_id = user.id
-            })
-            .catch(res => {
-                console.log(res)
-            })
-}
-
 let accountapp = new Vue({
     el: "#accountapp",
     data: {
-        user: user,
+        // user: user,
+        user: {},
         goods: goods,
         activeIndex:'4',
         myGoodsList: [],//我注册的商品
         myOwnGoodsList: [],//我拍卖到的商品
         myAuctionsObj: [],//我参与的拍卖
-
         dialogVisible: false,
         userInfoIsShow: true,
         MyGoodsInfoIsShow: false,
@@ -56,7 +32,18 @@ let accountapp = new Vue({
         chooseDialogVisible:false,
     },
     methods: {
-        setUserInfo,
+        setUserInfo(){
+            let that = this
+            axios.get("http://localhost:8081/users/" + localStorage["nowLoginUserPhoneNumber"])
+                    .then(res => {
+                        console.log(res)
+                        that.user = res.data.data
+                        goods.sell_user_id = that.user.id
+                    })
+                    .catch(res => {
+                        console.log(res)
+                    })
+        },
         setTheShow(i) {
             switch (i) {
                 case 1:
@@ -68,7 +55,7 @@ let accountapp = new Vue({
                 case 2:
                     let that = this
                     //获取自己注册的商品
-                    axios.get("http://localhost:8081/goods/" + user.id)
+                    axios.get("http://localhost:8081/goods/" + this.user.id)
                             .then(res => {
                                 console.log(res)
                                 that.myGoodsList = res.data.data
@@ -78,7 +65,7 @@ let accountapp = new Vue({
                             })
 
                     //获取自己购买到的商品
-                    axios.get("http://localhost:8081/goods/mybuy/" + user.id)
+                    axios.get("http://localhost:8081/goods/mybuy/" + this.user.id)
                             .then(res => {
                                 console.log(res)
                                 that.myOwnGoodsList = res.data.data
@@ -100,7 +87,7 @@ let accountapp = new Vue({
                 case 4:
                     let t = this
                     //获取自己注册的商品
-                    axios.get("http://localhost:8081/goods/" + user.id)
+                    axios.get("http://localhost:8081/goods/" + this.user.id)
                             .then(res => {
                                 console.log(res)
                                 t.myGoodsList = res.data.data
@@ -109,7 +96,7 @@ let accountapp = new Vue({
                                 console.log(res)
                             })
                     // 获取自己的竞拍记录
-                    axios.get("http://localhost:8081/auctions/myin/" + user.id)
+                    axios.get("http://localhost:8081/auctions/myin/" + this.user.id)
                             .then(res => {
                                 console.log(res)
                                 t.myAuctionsObj = res.data.data
@@ -262,13 +249,10 @@ let accountapp = new Vue({
             })
         }
     },
-
     mounted() {
+        this.setUserInfo()
 
     },
-    beforeDestroy() {
-
-    }
 })
 
 

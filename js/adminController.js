@@ -4,7 +4,6 @@ let app = new Vue({
         user:{},
         goods:{},
         auctions:{},
-
         userDataList: [],
         goodsDataList: [],
         auctionsDataList: [],
@@ -40,10 +39,6 @@ let app = new Vue({
                     })
         },
         setTheShow(index) {
-            // console.log(this.show[index-1])
-            // for (let i=0;i<3;i++){
-            //     this.show[i] = i == index-1;
-            // }
             switch (index) {
                 case 1:
                     this.users = true
@@ -145,7 +140,4 @@ let app = new Vue({
         this.getTheGoods()
         this.getTheAuctions()
     },
-    beforeDestroy() {
-
-    }
 })

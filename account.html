@@ -26,17 +26,13 @@
                         class="el-icon-sunset"></i>拍卖主页</a></el-menu-item>
             </el-menu>
         </el-header>
-
         <!--        头部以下-->
         <el-container style="margin-top: 60px">
             <el-aside width="400px">
                 <div class="userImage">
                     <img class="userimg" src="img/touxiang.jpg" alt="">
-                    <el-tag type="success" style="width: 80px;margin-bottom: 5px;margin-top: 5px">
-                        {{user.name}}
-                    </el-tag>
+                    <el-tag type="success" style="width: 80px;margin-bottom: 5px;margin-top: 5px">{{user.name}}</el-tag>
                     <el-tag type="success" style="width: 103px">￥{{user.money}}</el-tag>
-
                 </div>
                 <div class="someButton">
                     <el-button class="btn" style="margin-left: 10px" @click="setTheShow(1)">用户信息
@@ -64,7 +60,6 @@
                             <div class="card-text card-item"><el-tag type="info">账户余额：{{user.money}}</el-tag></div>
                         </el-card>
                     </div>
-
                     <!--                    //修改个人信息弹出框-->
                     <el-dialog title="请选择操作" :visible.sync="chooseDialogVisible" width="30%">
                         <span>
@@ -75,11 +70,8 @@
                             <el-button @click="chooseDialogVisible = false">取 消</el-button>
                         </span>
                     </el-dialog>
-
-
                     <!--                    我注册的商品界面-->
                     <div v-show="MyGoodsInfoIsShow" class="MyGoodsInfoIsShow accallgoods">
-
                         <!--                        注册的商品-->
                         <ul>
                             <li v-for="item in myGoodsList">
@@ -114,8 +106,6 @@
                             </li>
                         </ul>
                     </div>
-
-
                     <!--                    商品注册界面-->
                     <div style="width: 90%" v-show="GoodsReInfoIsShow">
                         <el-tag type="warning" style="font-size: 30px;width: 160px;height: 45px;
@@ -138,7 +128,6 @@
                             <el-form-item><el-button :plain="true" type="primary" @click="submitForm">立即注册</el-button><el-button @click="resetForm">重置</el-button></el-form-item>
                         </el-form>
                     </div>
-
                     <!--                    拍卖管理-->
                     <div v-show="myGoodsControl">
                         <p>我创建的拍卖</p>
@@ -159,7 +148,6 @@
                             </el-table>
                         </template>
                     </div>
-
                     <!--                    我参与的拍卖-->
                     <div v-show="myGoodsControl" style="margin-top: 40px">
                         <p>我参与的拍卖</p>
@@ -177,8 +165,6 @@
                             </el-table>
                         </template>
                     </div>
-
-
                     <!--                    退出登录框弹出-->
                     <el-dialog title="提示" :visible.sync="dialogVisible" width="30%" class="outdialog">
                         <span>您确定退出吗？</span>

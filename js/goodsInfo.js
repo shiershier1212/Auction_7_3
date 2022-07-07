@@ -1,7 +1,5 @@
 let thisGoodsId = localStorage["nowGoodId"]//当前页面的商品id
-// let thisGoodsId = 26//当前页面的商品id
 let c
-
 let goodsInfoApp = new Vue({
     el: "#goodsInfoApp",
     data: {
@@ -17,15 +15,11 @@ let goodsInfoApp = new Vue({
         mybidprices: 100,
         user: null,
         goods: null,
-        // goods: {
-        //     sell_user_id: 1
-        // },
         thisGoodsMaxPrices: 0,
         auctionsList: [],
         canbid: true,
         search:"",
         isMyGoods:false,
-
     },
     methods: {
         setTheGoods() {
@@ -63,8 +57,6 @@ let goodsInfoApp = new Vue({
                     .catch(res => {
                         console.log(res)
                     })
-            // axios.get("http://localhost:8081/users")
-            //         .then(res=>)
         },
         // 该方法是在页面更新倒计时
         getTheCountDownTime() {
@@ -82,20 +74,13 @@ let goodsInfoApp = new Vue({
             this.time.h = Math.floor(t / 1000 / 60 / 60 % 24)
             this.time.m = Math.floor(t / 1000 / 60 % 60)
             this.time.s = Math.floor(t / 1000 % 60)
-
-            // if(this.goods!=null){
-            //     console.log(this.goods.sell_user_id)
-            //     console.log(localStorage["nowLoginUserId"])
-            // }
         },
 
         // 在打开页面时更新，结束拍卖
         endTheAuctions() {
             console.log("结束拍卖")
             if (this.goods.status === "正进行" && this.goods.buy_user_id === 0) {
-
                 let goodsUpdate
-
                 if(this.auctionsList[0]==null){
                     goodsUpdate = {
                         id: this.goods.id,
@@ -116,8 +101,6 @@ let goodsInfoApp = new Vue({
                         .then(res => {
                             console.log(res.data)
                         })
-
-
                 if(this.auctionsList[0]==null){
                     return
                 }
@@ -150,7 +133,6 @@ let goodsInfoApp = new Vue({
                         })
             }
         },
-
         bidGoods() {
             let that = this
             // 竞价操作,点击参与竞价时触发
@@ -171,7 +153,6 @@ let goodsInfoApp = new Vue({
                 this.dialogVisible = false
                 return
             }
-
             let myauctions = {
                 goods_id: this.goods.id,
                 sell_user_id: this.goods.sell_user_id,
@@ -190,7 +171,6 @@ let goodsInfoApp = new Vue({
                             that.dialogVisible = false
                         }
                     })
-
             //修改当前商品的价格最大值
             let cg = {
                 id: this.goods.id,
@@ -222,9 +202,6 @@ let goodsInfoApp = new Vue({
 
             this.mybidprices = this.goods.buyout_prices
 
-            // 执行竞价操作
-            // this.bidGoods()
-
             let myauctionso = {
                 goods_id: this.goods.id,
                 sell_user_id: this.goods.sell_user_id,
@@ -243,7 +220,6 @@ let goodsInfoApp = new Vue({
                             that.dialogVisible = false
                         }
                     })
-
 
             //更改商品的信息
             let g = {
@@ -274,7 +250,6 @@ let goodsInfoApp = new Vue({
                     .catch(res => {
                         console.log(res.data)
                     })
-
             let u = {
                 id:localStorage["nowLoginUserId"],
                 money:this.mybidprices
@@ -308,6 +283,5 @@ let goodsInfoApp = new Vue({
     beforeDestroy() {
         clearInterval()
     },
-
 })
 

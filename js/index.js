@@ -68,7 +68,6 @@ let app = new Vue({
                     this.$message.error("注册失败！"+res.data)
                 })
         },
-
     }
 })
 
