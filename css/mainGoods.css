@@ -22,6 +22,12 @@ li {
     flex-flow: column;
     /*margin-top: 60px;*/
 }
+@font-face {
+    /* 字体名称随意起 */
+    font-family: hua;
+    /*你下载字体所在的位置*/
+    src: url("../fonts/汉仪花木兰.ttf");
+}
 
 .search-top {
     background-color: #f8f8f8;
@@ -29,8 +35,10 @@ li {
     text-align: center;
 }
 .search-top span{
-    font-size: 78px;
-    font-family: 华文楷体;
+    font-size: 100px;
+    /*font-family: 华文楷体;*/
+    font-family: hua;
+
 }
 
 .search-bottom {

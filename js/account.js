@@ -3,7 +3,7 @@ let goods = {
     id: null,
     name: "",
     description: "",
-    sell_user_id: user.id,
+    // sell_user_id: user.id,
     buy_user_id: null,
     min_prices: 1,
     max_prices: 1,
