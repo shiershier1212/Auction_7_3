@@ -7,13 +7,11 @@ let app = new Vue({
         userDataList: [],
         goodsDataList: [],
         auctionsDataList: [],
-        // show:[false,false,false]
-        users: true,
-        goodss: false,
-        auctionss: false,
         updateUserDialogVisible:false,
         updateGoodsDialogVisible:false,
         updateAuctionsDialogVisible:false,
+        nowShow:1,
+        addDialogVisible:0,
     },
     methods: {
         getTheUser() {
@@ -39,23 +37,7 @@ let app = new Vue({
                     })
         },
         setTheShow(index) {
-            switch (index) {
-                case 1:
-                    this.users = true
-                    this.goodss = false
-                    this.auctionss = false
-                    break
-                case 2:
-                    this.users = false
-                    this.goodss = true
-                    this.auctionss = false
-                    break
-                case 3:
-                    this.users = false
-                    this.goodss = false
-                    this.auctionss = true
-                    break
-            }
+            this.nowShow = parseInt(index)
         },
         editUser(row) {
             this.user = row
@@ -91,6 +73,7 @@ let app = new Vue({
                         this.updateGoodsDialogVisible = false
                     })
         },
+
         updateAuctions(){
             axios.put("http://localhost:8081/auctions/updateById",this.auctions)
                     .then(res=>{
@@ -109,6 +92,7 @@ let app = new Vue({
                     .then(res => {
                         if (res.data.status === 'ok') {
                             this.$message({message: '删除成功！', type: 'success'})
+                            window.location.href="adminController.html"
                         } else {
                             this.$message.error("删除失败！")
                         }
@@ -119,6 +103,7 @@ let app = new Vue({
                     .then(res => {
                         if (res.data.status === 'ok') {
                             this.$message({message: '删除成功！', type: 'success'})
+                            window.location.href="adminController.html"
                         } else {
                             this.$message.error("删除失败！")
                         }
@@ -129,15 +114,20 @@ let app = new Vue({
                     .then(res => {
                         if (res.data.status === 'ok') {
                             this.$message({message: '删除成功！', type: 'success'})
+                            window.location.href="adminController.html"
                         } else {
                             this.$message.error("删除失败！")
                         }
                     })
+        },
+        showTheAddDialog(){
+            this.addDialogVisible = this.nowShow
         }
     },
     mounted() {
         this.getTheUser()
         this.getTheGoods()
         this.getTheAuctions()
+        console.log(this.nowShow)
     },
 })

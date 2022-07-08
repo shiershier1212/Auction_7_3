@@ -124,7 +124,6 @@ a:-webkit-any-link {
     margin-top: 20px;
 }
 
-
 .center{
     margin-top: 2px;
     background-color: #ffffff;
@@ -159,8 +158,6 @@ h1 .tt{
     padding: 0;
 }
 
-
-
 /*关于search的*/
 
 .search {
@@ -175,9 +172,16 @@ h1 .tt{
     height: 70%;
     text-align: center;
 }
+@font-face {
+    /* 字体名称随意起 */
+    font-family: hua;
+    /*你下载字体所在的位置*/
+    src: url("../fonts/汉仪花木兰.ttf");
+}
+
 .search-top span{
-    font-size: 78px;
-    font-family: 华文楷体, serif;
+    font-size: 100px;
+    font-family: hua;
 }
 
 .search-bottom {
@@ -228,11 +232,14 @@ h1 .tt{
 .gimin{
     color: #808080;
     font-size: 25px;
+    font-family: hua;
 }
 
 .gimj{
     color: #7f7f7f;
     font-size: 20px;
+    font-family: hua;
+
 }
 
 .spanbuyout{
@@ -250,4 +257,12 @@ h1 .tt{
 }
 .si .el-input__inner {
     border: 2px solid black;
+}
+.ic{
+    width: 50px;
+    height: 50px;
+}
+.maiduanfont{
+    font-family: hua;
+    font-size: 17px;
 }
