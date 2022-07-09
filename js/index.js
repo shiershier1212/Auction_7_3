@@ -4,7 +4,7 @@ let app = new Vue({
         userList: [],
         loginpn: "",
         loginps: "",
-        admin: {
+        user: {
             name: "",
             phone_number: "",
             password: "",
@@ -58,14 +58,16 @@ let app = new Vue({
                 .then(function (res) {
                     console.log(res)
                     if(res.data.status==="ok"){
-                        this.$message({message:"注册成功！",type:"success"})
+                        // this.$message({message:"登录成功！",type:"success"})
+                        alert("注册成功!")
+
                     }else {
-                        this.$message.error("注册失败！"+res.data)
+                        this.$message.error("注册失败！账号已经存在！"+res.data)
                     }
                 })
                 .catch(res => {
                     console.log(res)
-                    this.$message.error("注册失败！"+res.data)
+                    // this.$message.error("注册失败！"+res.data)
                 })
         },
     }

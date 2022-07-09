@@ -193,7 +193,7 @@ let accountapp = new Vue({
             if (row.status === "已结束") {
                 this.$message.error("竞拍已经结束！无法取消！")
             } else {
-                axios.delete("http://localhost:8081/auctions/deleteByMyId/" + row.buy_user_id)
+                axios.delete("http://localhost:8081/auctions/deleteByMyId/" +row.goods_id)
                         .then(res => {
                             if (res.data.status === "ok") {
                                 this.$message({message: "删除竞拍信息成功！", type: "success"})
